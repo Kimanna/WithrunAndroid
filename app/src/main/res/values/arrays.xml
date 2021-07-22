@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="uploadImages">
+        <item>Pick from gallery</item>
+        <item>Click from camera</item>
+        <item>Remove image</item>
+    </string-array>
+
+    <string-array name="itemIds">
+        <item>gallery_image</item>
+        <item>camera_image</item>
+        <item>remove_image</item>
+    </string-array>
+
+    <string-array name="my_race_record">
+        <item>주간별</item>
+        <item>월간별</item>
+        <item>연간별</item>
+        <item>전체</item>
+    </string-array>
+</resources>

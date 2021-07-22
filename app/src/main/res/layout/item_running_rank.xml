@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<LinearLayout
+    android:id="@+id/outerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingHorizontal="20dp">
+
+        <TextView
+            android:id="@+id/rankingNo"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="1"
+            android:fontFamily="@font/binggraesamancobold"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:text="1"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/RankingProfileImgItem"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:civ_border_color="@color/colorDarkGray"
+            app:civ_border_width="0.5dp"/>
+
+        <TextView
+            android:id="@+id/RankingNicknameItem"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textSize="25dp"
+            android:fontFamily="@font/binggraesamanco"
+            android:textColor="@color/black"
+            android:text="앙나"/>
+
+        <TextView
+            android:id="@+id/joinRunning"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18dp"
+            android:fontFamily="@font/binggraesamancobold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/frenchblue"
+            android:visibility="gone"
+            android:text="러닝 중" />
+
+        <TextView
+            android:id="@+id/notJoinRunning"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18dp"
+            android:fontFamily="@font/binggraesamancobold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/fireBrick"
+            android:text="입장 전"/>
+
+        <TextView
+            android:id="@+id/exitRunning"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18dp"
+            android:fontFamily="@font/binggraesamancobold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/blackNot"
+            android:visibility="gone"
+            android:text="미완주" />
+
+        <TextView
+            android:id="@+id/finishRunning"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18dp"
+            android:fontFamily="@font/binggraesamancobold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/greencolor"
+            android:visibility="gone"
+            android:text="완주" />
+
+        <TextView
+            android:id="@+id/notComeRunning"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18dp"
+            android:fontFamily="@font/binggraesamancobold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/fireBrick"
+            android:visibility="gone"
+            android:text="미참" />
+
+        <TextView
+            android:id="@+id/gap"
+            android:layout_weight="1"
+            android:gravity="right"
+            style="@style/CustomTexttitle"
+            android:layout_gravity="center"
+            android:text="-4.00 km"
+            android:textSize="23dp"
+            android:fontFamily="@font/binggraesamancobold"
+            android:textColor="@color/RED"/>
+
+</LinearLayout>
+</layout>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateRoom">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text="러닝 룸 개설"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+    <ImageView
+        android:id="@+id/back_home"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:srcCompat="?attr/homeAsUpIndicator" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/imageArea"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/lightgrey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+
+        <TextView
+            android:id="@+id/textView36"
+            android:layout_width="270dp"
+            android:layout_height="95dp"
+            android:fontFamily="@font/binggraesamancobold"
+            android:text="WithRun"
+            android:textColor="@color/cerulean"
+            android:textSize="90dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/image" />
+
+        <ImageView
+            android:id="@+id/roomPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="fitXY"
+            android:visibility="gone"/>
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="25dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageArea">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="20dp"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/runDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/rust"
+                android:fontFamily="@font/binggraesamancobold"
+                android:layout_marginHorizontal="10dp"
+                android:textSize="40dp"/>
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/binggraesamancobold"
+                android:textSize="40dp"
+                android:textColor="@color/rust"
+                android:layout_marginHorizontal="10dp"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/selectDiffDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/binggraesamanco"
+                android:textSize="20dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="다른날자 선택" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/roomTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="러닝 룸 이름"
+            android:textColor="@color/burntcoral"
+            android:maxLines="1"
+            android:inputType="text"
+            android:ellipsize="end"
+            android:textSize="22dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView27"
+                style="@style/CustomTexttitle"
+                android:text="목표 거리 선택 ( km )" />
+
+            <View
+                android:id="@+id/divider16"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/runDistance"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/additionsign" />
+
+            <TextView
+                android:id="@+id/runDistanceText"
+                style="@style/CustomTexttitle" />
+
+        </LinearLayout>
+
+        <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView18"
+            style="@style/CustomTexttitle"
+            android:text="러닝 시간 설정" />
+
+        <View
+            android:id="@+id/divider15"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/runStartTime"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="20dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/additionsign" />
+
+        <TextView
+            android:id="@+id/runStartTimeText"
+            style="@style/CustomTexttitle" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView28"
+                style="@style/CustomTexttitle"
+                android:text="성별 지정" />
+
+            <View
+                android:id="@+id/divider18"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/genderSetting"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:theme="@style/CustomTexttitle"
+                android:entries="@array/createRoomGender"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView35"
+                style="@style/CustomTexttitle"
+                android:text="레벨 지정" />
+
+            <View
+                android:id="@+id/divider25"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?android:attr/listDivider" />
+
+<!--            <Spinner-->
+<!--                android:id="@+id/spinner"-->
+<!--                android:layout_width="120dp"-->
+<!--                android:layout_height="match_parent" -->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center"/>-->
+
+            <Spinner
+                android:id="@+id/level"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:theme="@style/CustomTexttitle"
+                android:entries="@array/createRoomLevel"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <Button
+        android:id="@+id/createRoom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bt_login_green"
+        android:text="개설하기"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="20dp"/>
+
+</android.support.constraint.ConstraintLayout>

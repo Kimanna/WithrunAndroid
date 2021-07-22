@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="blackNot">#4D000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="whiteNot">#4DFFFFFF</color>
+    <color name="marigold_main_status">#feae51</color>
+    <color name="illuminating_main_tool">#f3df4d</color>
+    <color name="cerulean">#98b2d1</color>
+    <color name="rust">#b35f44</color>
+    <color name="frenchblue">#3078b4</color>
+    <color name="greenash">#9fdbad</color>
+    <color name="burntcoral">#ec8b83</color>
+    <color name="mint">#00a779</color>
+    <color name="amethystorchid">#9369a8</color>
+    <color name="raspberrysorbet">#cd4a77</color>
+    <color name="inkwell">#434852</color>
+    <color name="ultimategray">#96999b</color>
+    <color name="desertmist">#e0b589</color>
+    <color name="willow">#9d915a</color>
+    <color name="lightgrey">#e0e0e0</color>
+    <color name="lightgrey1">#cfcfcf</color>
+    <color name="lightgrey2">#f5f5f5</color>
+    <color name="RED">#FF0000</color>
+
+    <color name="colorLightGray">#F9F7F7</color>
+    <color name="colorSlateGray">#D3D3D3</color>
+    <color name="Lightgray">#E9E8F0</color>
+    <color name="colorDarkGray">#A9A9A9</color>
+    <color name="colorlightsteelblue">#D0C4DE</color>
+    <color name="colorDarkslategray">#2F4F4F</color>
+    <color name="colorSkyblue">#6495ED</color>
+    <color name="colorDeepcobaltlbue">#6482D9</color>
+    <color name="colorpeal">#A297BD</color>
+    <color name="colorRose">#DB7093</color>
+    <color name="deepRose">#B45252</color>
+    <color name="toodeepRose">#8F4646</color>
+    <color name="colorLightRose">#FFF0F0</color>
+    <color name="titlecolor">#282828</color>
+    <color name="greencolor">#28A831</color>
+    <color name="deepgreen">#1E9425</color>
+    <color name="darkgreen">#16701C</color>
+    <color name="darkcyan">#008B8B</color>
+    <color name="teal">#008080</color>
+    <color name="lightgreen">#20B2AA</color>
+    <color name="yellow">#990066</color>
+    <color name="fireBrick">#B22222</color>
+
+
+
+
+
+
+</resources>

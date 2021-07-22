@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="40dp"
+    android:paddingVertical="20dp"
+    android:paddingHorizontal="15dp"
+    android:background="@drawable/border_white">
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/transferManagerRV"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogTitle" />
+
+    <Button
+        android:id="@+id/cancelManager"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bt_login_green"
+        android:backgroundTint="@color/lightgrey1"
+        android:text="취소"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:visibility="gone"
+        app:layout_constraintRight_toLeftOf="@+id/confirmManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transferManagerRV" />
+
+    <Button
+        android:id="@+id/confirmManager"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bt_login_green"
+        android:text="확인"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/cancelManager"
+        app:layout_constraintTop_toTopOf="@+id/cancelManager" />
+
+
+</android.support.constraint.ConstraintLayout>

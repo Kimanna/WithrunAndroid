@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="2dp"
+    android:paddingVertical="5dp"
+    android:paddingHorizontal="15dp"
+    android:layout_marginBottom="7dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/notiMessage"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:gravity="top"
+            android:text=""
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="3dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/notiFollowIcon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/follower" />
+
+            <ImageView
+                android:id="@+id/notiInvitationIcon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/invitation" />
+
+            <ImageView
+                android:id="@+id/notiActiveIcon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/tracking" />
+
+            <TextView
+                android:id="@+id/notiTimeItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider19"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="?android:attr/listDivider" />
+
+    <ImageView
+        android:id="@+id/deleteNotiBT"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/more" />
+
+</LinearLayout>
+</layout>

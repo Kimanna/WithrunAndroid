@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="50dp"
+    android:layout_marginVertical="180dp"
+    android:background="@drawable/border_white"
+    tools:context=".RaceScore">
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/textView3"
+        app:srcCompat="@drawable/finish" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="경기 종료 ( 기록 )"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/imageView7"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        style="@style/CustomTextRaceRecord"
+        android:text="총 운동시간"
+        app:layout_constraintEnd_toStartOf="@+id/totalTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/totalTime"
+        style="@style/CustomTextRaceRecord"
+        android:text="00 : 00 : 00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView7"
+        style="@style/CustomTextRaceRecord"
+        android:text="총 운동 거리"
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+
+    <TextView
+        android:id="@+id/totalDistance1"
+        style="@style/CustomTextRaceRecord"
+        android:text="0.00"
+        app:layout_constraintEnd_toEndOf="@+id/totalTime"
+        app:layout_constraintStart_toStartOf="@+id/totalTime"
+        app:layout_constraintTop_toBottomOf="@+id/totalTime" />
+
+    <TextView
+        android:id="@+id/textView9"
+        style="@style/CustomTextRaceRecord"
+        android:text="평균 페이스"
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/totalPace"
+        style="@style/CustomTextRaceRecord"
+        android:text="0 : 00"
+        app:layout_constraintEnd_toEndOf="@+id/totalTime"
+        app:layout_constraintStart_toStartOf="@+id/totalTime"
+        app:layout_constraintTop_toBottomOf="@+id/totalDistance1" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:text=" 방을 나가시면 해당 경주는 더 이상 관람할 수 없습니다."
+        android:textColor="@color/RED"
+        android:textSize="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/keepWatching" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/CustomTextRaceRecord"
+        android:text="순위"
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/myRanking"
+        style="@style/CustomTextRaceRecord"
+        android:text="1 위"
+        app:layout_constraintEnd_toEndOf="@+id/totalTime"
+        app:layout_constraintStart_toStartOf="@+id/totalTime"
+        app:layout_constraintTop_toBottomOf="@+id/totalPace" />
+
+    <Button
+        android:id="@+id/keepWatching"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/border"
+        android:text="관람하기"
+        app:layout_constraintEnd_toStartOf="@+id/leavingRoom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/leavingRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:text="방 나가기"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/keepWatching"
+        app:layout_constraintTop_toTopOf="@+id/keepWatching" />
+</android.support.constraint.ConstraintLayout>

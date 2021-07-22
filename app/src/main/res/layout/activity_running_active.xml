@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RunningActive">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text="러닝 중"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/back_Profile"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_marginStart="15dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/toolbar"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/toolbar"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/toolbar"-->
+<!--        app:srcCompat="?attr/homeAsUpIndicator" />-->
+
+    <TextView
+        android:id="@+id/averagePace"
+        style="@style/CustomTextActiveSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00 : 00"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="35dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView50" />
+
+    <TextView
+        android:id="@+id/textView48"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        style="@style/CustomTextActiveText"
+        android:text="평균 페이스 (분/km)"
+        app:layout_constraintEnd_toEndOf="@id/averagePace"
+        app:layout_constraintStart_toStartOf="@id/averagePace"
+        app:layout_constraintTop_toBottomOf="@id/averagePace" />
+
+    <TextView
+        android:id="@+id/runProgressTime"
+        style="@style/CustomTextActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00 : 00 : 00"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/textView50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="경주 시간"
+        style="@style/CustomTextActiveText"
+        app:layout_constraintEnd_toEndOf="@id/runProgressTime"
+        app:layout_constraintStart_toStartOf="@id/runProgressTime"
+        app:layout_constraintTop_toBottomOf="@id/runProgressTime" />
+
+    <TextView
+        android:id="@+id/runningDistance"
+        style="@style/CustomTextActiveSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00 (km)"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/averagePace"
+         />
+
+    <TextView
+        android:id="@+id/textView53"
+        style="@style/CustomTextActiveText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="현재 순위"
+        app:layout_constraintEnd_toEndOf="@+id/runningTotalMember"
+        app:layout_constraintStart_toStartOf="@id/runningRank"
+        app:layout_constraintTop_toTopOf="@+id/textView48" />
+
+
+    <TextView
+        android:id="@+id/runningRank"
+        style="@style/CustomTextActiveSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="65dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/averagePace" />
+
+    <TextView
+        android:id="@+id/runningTotalMember"
+        style="@style/CustomTextActiveSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginEnd="35dp"
+        app:layout_constraintTop_toTopOf="@+id/averagePace"
+        app:layout_constraintStart_toEndOf="@id/runningRank"/>
+
+    <TextView
+        android:id="@+id/textView65"
+        style="@style/CustomTextActiveText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="거리 (km)"
+        app:layout_constraintEnd_toEndOf="@id/runningDistance"
+        app:layout_constraintStart_toStartOf="@id/runningDistance"
+        app:layout_constraintTop_toTopOf="@+id/textView48" />
+
+
+    <Button
+        android:id="@+id/giveupRaceBT"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:text="완주 포기"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/fireBrick"
+        android:background="@drawable/bottomlines"
+        android:elevation="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/goMyRaceHistoryDetail"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:text="룸 나가기"
+        android:visibility="gone"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bottomlines"
+        android:elevation="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/mapLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView65">
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            map:liteMode="true"
+            tools:context=".MapsActivity" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView54"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginVertical="2dp"
+        android:paddingVertical="5dp"
+        android:fontFamily="@font/binggraesamancobold"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="ㅡ 현재 러너 순위 ㅡ"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapLayout"/>
+
+    <LinearLayout
+        android:id="@+id/outerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView54">
+
+        <TextView
+            android:id="@+id/rankingNo"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="1"
+            android:fontFamily="@font/binggraesamanco"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:text="순위"/>
+
+        <TextView
+            android:id="@+id/RankingNicknameItem"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="1"
+            android:fontFamily="@font/binggraesamanco"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:text="러너"/>
+
+        <TextView
+            android:id="@+id/gap"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="남은거리"
+            android:textSize="16dp"
+            android:fontFamily="@font/binggraesamanco"
+            android:textColor="@color/RED"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/lightgrey2"
+        android:paddingTop="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/outerLayout">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvActiveRanking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

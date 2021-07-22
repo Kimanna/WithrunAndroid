@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="5dp"
+    android:paddingHorizontal="10dp"
+    android:layout_marginBottom="8dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/medalImage"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mortarboard" />
+
+    <TextView
+        android:id="@+id/paceRace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/binggraesamancobold"
+        android:gravity="center_horizontal"
+        android:text="00.00 분/km"
+        android:textSize="17dp"
+        app:layout_constraintStart_toEndOf="@+id/medalText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/raceTotalDistance"
+        style="@style/CustomTextRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="( 총 거리 0 km )"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/paceRace"
+        app:layout_constraintStart_toEndOf="@+id/paceRace"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/medalText"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="금메달"
+        android:textSize="17dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/binggraesamancobold"
+        app:layout_constraintStart_toEndOf="@+id/medalImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/raceTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        style="@style/CustomTextRecord"
+        app:layout_constraintStart_toStartOf="@+id/paceRace"
+        app:layout_constraintTop_toBottomOf="@+id/paceRace" />
+
+    <TextView
+        android:id="@+id/raceStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="월, 21/5/10"
+        style="@style/CustomTextRecord"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/myRanking"
+        style="@style/CustomTextRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0위 (0명)"
+
+        app:layout_constraintStart_toStartOf="@+id/medalText"
+        app:layout_constraintTop_toBottomOf="@+id/medalText" />
+
+</android.support.constraint.ConstraintLayout>

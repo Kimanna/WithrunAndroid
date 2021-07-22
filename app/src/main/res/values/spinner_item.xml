@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="createRoomGender">
+        <item>모두</item>
+        <item>남자만</item>
+        <item>여자만</item>
+    </string-array>
+
+    <string-array name="createRoomLevel">
+        <item>모두</item>
+        <item>런린이 ( 평균 페이스 - 6:30 이후 )</item>
+        <item>중급러너 ( 평균 페이스 - 4:30 ~ 6:30 )</item>
+        <item>프로러너 ( 평균 페이스 - 4:30 이전 )</item>
+    </string-array>
+</resources>
