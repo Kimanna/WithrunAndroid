@@ -56,7 +56,7 @@ Running app android kotlin project
 		
     
 		○ Database ERD
-		[WithRun_database_dbdiagram.pdf](https://github.com/Kimanna/WithrunAndroid/files/6933196/WithRun_database_dbdiagram.pdf)
+[WithRun_database_dbdiagram.pdf](https://github.com/Kimanna/WithrunAndroid/files/6933277/WithRun_database_dbdiagram.pdf)
 
 		
 		○ UI 간략 정리
@@ -72,7 +72,7 @@ Running app android kotlin project
 		-비밀번호 찾기 및 재 설정 ( 02:25 ~ 03:20 ) 
 		-회원탈퇴 ( 03:20 ~ )
 		
-    [![image](https://user-images.githubusercontent.com/69760221/128225059-bdf325e1-816f-46e0-b439-f6d592f62f33.png)](https://youtu.be/bzdoSOX4IIQ)
+[![image](https://user-images.githubusercontent.com/69760221/128225957-3cc326a9-afdb-4d1e-bce0-84c492acbddb.png)](https://youtu.be/bzdoSOX4IIQ)
 
 
 		2.경기 룸 만들기 (+ 참여하기), 초대, 채팅
@@ -85,7 +85,7 @@ Running app android kotlin project
 		-경주가 종료된 룸 삭제 ( 03:51 ~ 04:25 )
 		-초대받은 유저의 알림 상태창에 초대메시지 저장 및 삭제 ( 04:25 ~ )
 		
-[![image](https://user-images.githubusercontent.com/69760221/128225156-53a2a265-d96c-4963-9a22-ff4facd5b899.png)](https://youtu.be/5gzkIHLfPmE)
+[![image](https://user-images.githubusercontent.com/69760221/128225973-90220ae2-4122-41e0-8d32-42ba9683b091.png)](https://youtu.be/5gzkIHLfPmE)
 
 
 		3.팔로우 ( +알림 상태창), 상대프로필 보기
@@ -97,7 +97,7 @@ Running app android kotlin project
 		-팔로우 유저의 최근 활동 내역 보기 또는 숨기기 ( 01:40 ~ )
 		
 
-[![image](https://user-images.githubusercontent.com/69760221/128225264-c728be83-893f-4903-8d9b-9bbbb7759811.png)](https://youtu.be/k3w7VbHYL-U)
+[![image](https://user-images.githubusercontent.com/69760221/128225981-826d035a-ff66-42c9-9821-56e1cf0bbc9d.png)](https://youtu.be/k3w7VbHYL-U)
 
 
 		4.러닝 경기
@@ -110,7 +110,7 @@ Running app android kotlin project
 		-완주 & 경기 포기시 경주기록과 이동경로가 포함된 지도를 함께 저장 ( 04:56 ~ )
 		
 
-[![image](https://user-images.githubusercontent.com/69760221/128225345-86c7e58c-78ab-44ca-bb78-ad2fc7c9fae3.png)](https://youtu.be/qOEmoMySWUc)
+[![image](https://user-images.githubusercontent.com/69760221/128225987-9a3b3483-7336-424d-9db7-ae3c955a9fe7.png)](https://youtu.be/qOEmoMySWUc)
 
 
 		5.설정
@@ -119,7 +119,7 @@ Running app android kotlin project
 		-로그아웃 ( 01:55 ~ )
 	
 
-[![image](https://user-images.githubusercontent.com/69760221/128225431-6a90cd9c-367e-46b0-8b9d-bc065caaf5ec.png)](https://youtu.be/JFmGLzSQyCE)
+[![image](https://user-images.githubusercontent.com/69760221/128225993-c1da2f46-6c5d-404d-9bbb-efdff0a2e6d1.png)](https://youtu.be/JFmGLzSQyCE)
 
 
 		6.전체 유저 주간 랭킹, 내 경기 내역 보기 (월간 정렬), 최근 경기 활동 내역  
@@ -128,4 +128,4 @@ Running app android kotlin project
 		-해당 유저와 팔로잉 유저의 최근 활동 경기 보기 및 삭제 ( 01:00 ~ )
 
 
-[![image](https://user-images.githubusercontent.com/69760221/128225499-a7dad2fb-e109-4b04-9f44-c098912ae564.png)](https://youtu.be/R7EMEKn2pZs)
+[![image](https://user-images.githubusercontent.com/69760221/128226006-9d2bf9b8-e080-4bce-a48a-82ff9d9337fc.png)](https://youtu.be/R7EMEKn2pZs)
