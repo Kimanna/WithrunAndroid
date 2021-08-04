@@ -57,11 +57,10 @@ Running app android kotlin project
     
 		○ Database ERD
 [WithRun_database_dbdiagram.pdf](https://github.com/Kimanna/WithrunAndroid/files/6933277/WithRun_database_dbdiagram.pdf)
+[WithRun_database_dbdiagram](https://github.com/Kimanna/WithrunAndroid/files/6933277/WithRun_database_dbdiagram.png)
 
 		
-		○ UI 간략 정리
-		
-		
+				
 		○ 기능 시연 영상
 		
 		1.회원가입, 로그인, 비밀번호 찾기 (변경), 프로필 등록 및 변경
