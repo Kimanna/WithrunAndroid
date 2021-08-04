@@ -8,7 +8,8 @@ Running app android kotlin project
 		○ 프로젝트 소개 :  GPS 를 이용해 실시간으로 러닝 기록을 비교하며 경쟁하거나 또는 러닝 활동을 기록하여 다른사람과 공유하는 어플
 
 
-		○ 프로젝트 개발 목적 : '기록 경쟁' 이라는 강력한 동기부여로 성취욕과 정신력 향상을 목표로 하고, 초심자도 쉽게 러닝의 재미를 붙일 수 있을것으로 예상하여 기획
+		○ 프로젝트 개발 목적 : '기록 경쟁' 이라는 강력한 동기부여로 성취욕과 정신력 향상을 목표로 하고, 
+				     초심자도 쉽게 러닝의 재미를 붙일 수 있게 하기위해 기획
 
 
 		○ 주요 기능
@@ -71,7 +72,9 @@ Running app android kotlin project
 		-비밀번호 찾기 및 재 설정 ( 02:25 ~ 03:20 ) 
 		-회원탈퇴 ( 03:20 ~ )
 		
-    
+    [![image](https://user-images.githubusercontent.com/69760221/128225059-bdf325e1-816f-46e0-b439-f6d592f62f33.png)](https://youtu.be/bzdoSOX4IIQ)
+
+
 		2.경기 룸 만들기 (+ 참여하기), 초대, 채팅
 		-경기 룸 만들기 ( ~ 00:25 )
 		-현재 방에 참여하고있지 않은 유저에게 초대 알림 발송 ( 00:26 ~ 00:55 )
@@ -82,7 +85,9 @@ Running app android kotlin project
 		-경주가 종료된 룸 삭제 ( 03:51 ~ 04:25 )
 		-초대받은 유저의 알림 상태창에 초대메시지 저장 및 삭제 ( 04:25 ~ )
 		
-    
+[![image](https://user-images.githubusercontent.com/69760221/128225156-53a2a265-d96c-4963-9a22-ff4facd5b899.png)](https://youtu.be/5gzkIHLfPmE)
+
+
 		3.팔로우 ( +알림 상태창), 상대프로필 보기
 		-팔로우 신청과 알림발송 혹은 팔로우 취소 
 		-팔로우 수락 및 팔로워 유저 삭제
@@ -91,7 +96,10 @@ Running app android kotlin project
 		( 평균페이스가 유사한 사용자를 상위배치, 이름순 정렬 )
 		-팔로우 유저의 최근 활동 내역 보기 또는 숨기기 ( 01:40 ~ )
 		
-    
+
+[![image](https://user-images.githubusercontent.com/69760221/128225264-c728be83-893f-4903-8d9b-9bbbb7759811.png)](https://youtu.be/k3w7VbHYL-U)
+
+
 		4.러닝 경기
 		-경기 시작 시간 10분전 & 경기 시작 시 알림 ( ~ 01:35 )
 		-경주 중엔 앱이 백그라운드 상태에서도 경기시간 및 이동거리를 상태창 으로 실시간 업데이트 ( 01:36 ~ 02:15 )
@@ -101,15 +109,23 @@ Running app android kotlin project
 		-순위 변동 혹은 경주 완료 시 음성 알림 ( background 상태에서도 알림 ) ( 02:15 ~ 04:55 ) 
 		-완주 & 경기 포기시 경주기록과 이동경로가 포함된 지도를 함께 저장 ( 04:56 ~ )
 		
-		  
+
+[![image](https://user-images.githubusercontent.com/69760221/128225345-86c7e58c-78ab-44ca-bb78-ad2fc7c9fae3.png)](https://youtu.be/qOEmoMySWUc)
+
+
 		5.설정
 		-푸시알림, 이메일알림, 초대허용, 기록공개 on/off 설정 ( ~ 01:28 )
 		-고객지원, 서비스 이용약관, 개인정보 처리방침, 서비스 이용 동의, 버전 등을 확인 ( 01:29 ~ 01:50 )
 		-로그아웃 ( 01:55 ~ )
 	
-		
+
+[![image](https://user-images.githubusercontent.com/69760221/128225431-6a90cd9c-367e-46b0-8b9d-bc065caaf5ec.png)](https://youtu.be/JFmGLzSQyCE)
+
+
 		6.전체 유저 주간 랭킹, 내 경기 내역 보기 (월간 정렬), 최근 경기 활동 내역  
 		-내 경기 내역 보기 ( 월간 정렬 ) ( ~ 00:36 )
 		-전체 유저의 기록 주간 랭킹 ( 00:37 ~ 01:00 )
 		-해당 유저와 팔로잉 유저의 최근 활동 경기 보기 및 삭제 ( 01:00 ~ )
-![image](https://user-images.githubusercontent.com/69760221/128224530-47d91ab7-e675-4b29-a12c-20d0e5b717db.png)
+
+
+[![image](https://user-images.githubusercontent.com/69760221/128225499-a7dad2fb-e109-4b04-9f44-c098912ae564.png)](https://youtu.be/R7EMEKn2pZs)
