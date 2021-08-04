@@ -56,8 +56,8 @@ Running app android kotlin project
 		
     
 		○ Database ERD
-[WithRun_database_dbdiagram.pdf](https://github.com/Kimanna/WithrunAndroid/files/6933277/WithRun_database_dbdiagram.pdf)
-[WithRun_database_dbdiagram](https://github.com/Kimanna/WithrunAndroid/files/6933277/WithRun_database_dbdiagram.png)
+
+![WithRun_database_dbdiagram](https://user-images.githubusercontent.com/69760221/128227646-8c70bf92-0b85-41fc-af1a-dbec86a5c877.png)
 
 		
 				
