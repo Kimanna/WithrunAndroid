@@ -171,6 +171,7 @@
         android:fontFamily="@font/binggraesamancobold"
         android:textColor="@color/inkwell"
         android:textSize="60dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/roomPhoto"
         app:layout_constraintEnd_toEndOf="@+id/timertitle"
         app:layout_constraintStart_toStartOf="@+id/timertitle"

@@ -232,14 +232,29 @@
             android:paddingHorizontal="25dp"
             android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/textView23"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="5dp"
+            android:layout_height="match_parent"
             android:paddingHorizontal="25dp"
-            android:text="- 비밀번호 설정 시 연속적인 숫자, 생일, 전화번호 등 추측하기
-            쉬운 개인정보 및 아이디와 비슷한 비밀번호는 제외해 주세요" />
+            android:paddingVertical="5dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:alpha="0.4"
+                android:paddingVertical="1dp"
+                app:srcCompat="@drawable/exclamation" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:text="비밀번호 설정 시 연속적인 숫자, 생일, 전화번호 등 추측하기 쉬운 개인정보 및 아이디와 비슷한 비밀번호는 제외해 주세요" />
+        </LinearLayout>
 
     </LinearLayout>
 

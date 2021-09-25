@@ -77,6 +77,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             app:srcCompat="@drawable/back"
+            android:alpha="0.8"
             app:layout_constraintStart_toStartOf="@+id/signin_area"
             app:layout_constraintTop_toTopOf="@+id/signin_area"
             app:layout_constraintBottom_toTopOf="@+id/textInputLayout"/>

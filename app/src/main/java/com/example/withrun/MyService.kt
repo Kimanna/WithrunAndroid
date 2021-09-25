@@ -48,12 +48,13 @@ class MyService : Service() {
     companion object {
         val LatLng : ArrayList<LatLng> =  ArrayList()
 
-    }
 
+    }
 
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
     lateinit var locationCallback: LocationCallback
+
 
     var list = ArrayList<RoomIntoUser>() // 경기 룸 참가 user list (기록 update 하기위함)
 
@@ -92,10 +93,6 @@ class MyService : Service() {
     var networkWriter: BufferedWriter? = null
 
     private var html = "" // java server 에서 보내준 값을 찍어보기 위한 변수
-
-
-    private val REQUEST_ACCESS_FINE_LOCATION = 1000
-
 
     class MyBinder : Binder() {
         val service: MyBinder
@@ -169,30 +166,6 @@ class MyService : Service() {
                                     sendMessage(mCount, sendDistance, avgPace, LatLng, "경기완료","myRecord",currentRanking)
 
                                 }
-
-                                // 음성알림은 100m 단위로 경주기록 알려줌  ( 기획은 1k 단위 알림 )
-                                // 10으로 나눠 나머지가 0 일때마다, 처음빼고 1번만 알림
-//                                if (sendDistance > 10) {
-//                                    if (sendDistance / 10 != speakCount && sendDistance != 0) {
-//                                        speakCount = sendDistance / 10 // 음성이 여러번 호출되지 않도록 1의자리를 설정해줌
-//                                        speakSummary (sendDistance, mCount, avgPace)
-//                                    }
-//
-//                                } else {
-//                                    if (sendDistance % 10 == 0 && sendDistance / 10 != speakCount && sendDistance != 0) { // 시간, 거리, 현재 페이스
-//                                        speakCount = sendDistance / 10 // 음성이 여러번 호출되지 않도록 1의자리를 설정해줌
-//                                        speakSummary (sendDistance, mCount, avgPace)
-//                                    }
-//                                }
-
-
-
-//                                if (sendDistance % 10 == 0 && sendDistance / 10 != speakCount && sendDistance != 0) { // 시간, 거리, 현재 페이스
-//                                    speakCount = sendDistance / 10; // 음성이 여러번 호출되지 않도록 1의자리를 설정해줌
-//                                    speakSummary (sendDistance, mCount, avgPace);
-//                                }
-
-
                             }
 
                             updateNoti(); // notification 에 현재시간, 거리 변경
@@ -382,20 +355,6 @@ class MyService : Service() {
         if ( beforeRanking != 0 && beforeRanking < currentRanking ) {                          // 순위가 하락한 경우
 
              ttsSpeakString = "현재순위 " + currentRanking + " 위 입니다. 다시 역전할 수 있어요"
-
-//            when(currentRanking){
-//
-//                2 -> {
-//                    ttsSpeakString = "현재순위 " + currentRanking + " 위 입니다. 다시 역전할 수 있어요"
-//                }
-//                3 -> {
-//                    ttsSpeakString = "현재순위 " + currentRanking + " 위 입니다. 조금 더 힘내봅시다"
-//                }
-//                4 -> {
-//                    ttsSpeakString = "현재순위 " + currentRanking + " 위 입니다. 끝까지 포기하지 마세요"
-//                }
-//            }
-
 
         } else if ( beforeRanking != 0 && beforeRanking > currentRanking ) {                     // 순위가 오른 경우
 
@@ -830,7 +789,9 @@ class MyService : Service() {
         locationRequest.expirationTime = SystemClock.elapsedRealtime() + 10000000
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,  Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED ) {  }
+            ) != PackageManager.PERMISSION_GRANTED ) {
+        }
+
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null)  // 혹시 안드로이드 스튜디오에서 비정상적으로 권한 요청 오류를 표시할 경우, 'Alt+Enter'로
     }
 

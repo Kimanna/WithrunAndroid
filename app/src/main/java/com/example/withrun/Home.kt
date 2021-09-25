@@ -1,6 +1,7 @@
 package com.example.withrun
 
 import android.Manifest
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -80,7 +81,6 @@ class Home : AppCompatActivity() {
         var intent = intent
 
         if ( !TextUtils.isEmpty(intent.getStringExtra("location")) ) { // 이동해온 위치 정보
-            Log.d(TAG, "noti에서 넘겨받은 location 정보 " + intent.getStringExtra("location"))
 
             if ( intent.getStringExtra("location") == "Notification" ) { // notification 클릭으로 입장한 경우
                 val roomData = intent.getParcelableExtra<Room_object>(EXTRA_ROOM_DETAIL)
@@ -95,23 +95,21 @@ class Home : AppCompatActivity() {
                 coroutineReadNoti ("readInviteNoti", MainActivity.loginId, roomData.getUniqueNo()!!)
 
 
-                val intent = Intent(this, RoomDetail::class.java)
-                intent.putExtra("location","Home")
-                intent.putExtra("roomNo",roomData.getNo()!!)
-                intent.putExtra("longStartTime",roomData.getStartDateTime())
-                startActivity(intent)
+                // 룸 시작시간이 이미 지났으면
+                if ( longStartTime < System.currentTimeMillis()) {
+                    oftenUseMethod.dialogConfirmShow ("이미 시작 시간이 지나 입장이 불가합니다.", this)
 
-//                if ( currentTime > longStartTime) { // 룸 시작시간이 이미 지났으면
-//                    oftenUseMethod.dialogConfirmShow ("이미 시작 시간이 지나 입장이 불가합니다.", this)
-//
-//                } else { // 룸 시작시간이 안지났으면 룸 입장
-//
-//                    val intent = Intent(this, RoomDetail::class.java)
-//                    intent.putExtra("roomNo",roomData.getNo())
-//                    intent.putExtra("longStartTime",roomData.getStartDateTime())
-//                    startActivity(intent)
-//
-//                }
+
+                // 룸 시작시간이 안지났으면 룸 입장
+                } else {
+
+                    val intent = Intent(this, RoomDetail::class.java)
+                    intent.putExtra("location","Home")
+                    intent.putExtra("roomNo",roomData.getNo()!!)
+                    intent.putExtra("longStartTime",roomData.getStartDateTime())
+                    startActivity(intent)
+
+                }
             }
 
             if ( intent.getStringExtra("location") == "CreateRoom" ) { // CreateRoom으로 이동해온 경우
@@ -119,14 +117,92 @@ class Home : AppCompatActivity() {
                 var createdRoomNo = intent.getIntExtra("roomNo",0)
 
                 val intent = Intent(this, RoomDetail::class.java)
-                intent.putExtra("location","Home")
+                intent.putExtra("location","CreateRoom")
                 intent.putExtra("roomNo", createdRoomNo)
                 intent.putExtra("longStartTime", intent.getStringExtra("longStartTime"))
                 startActivity(intent)
 
             }
 
-        } else {
+            if ( intent.getStringExtra("location") == "AlarmReceiverStartRun" ) {
+                Log.d(TAG, "CreateRoom 접근시 롱 시간 체크 - 개설 룸시간 " + intent.getStringExtra("longStartTime") + " 룸넘버 " + intent.getIntExtra("roomNo",0))
+
+                var createdRoomNo = intent.getIntExtra("roomNo",0)
+                var runningStartTime = oftenUseMethod.mFormat.parse(intent.getStringExtra("longStartTime")).time
+
+                    val dlg: AlertDialog.Builder = AlertDialog.Builder(this,  android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth)
+                    dlg.setMessage("경기가 시작되었습니다, 경기 룸으로 이동 하시겠습니까?") // 메시지
+                    dlg.setNeutralButton("경기 룸 이동", DialogInterface.OnClickListener { dialog, which ->
+
+                        // 유저를 러닝 중으로 상태 변경해줌
+                        coroutineActiveRunState(createdRoomNo)
+
+                        val intent = Intent(this, RunningActive::class.java)
+                        intent.putExtra("location","Home")
+                        intent.putExtra("roomNo", createdRoomNo)
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startActivity(intent)
+                        finish()
+
+
+                    })
+                    dlg.setNegativeButton ("경기 포기", DialogInterface.OnClickListener { dialog, which->
+
+                        // 경기 포기하게되면 미 완주에 기록 없음으로 표기
+                        // 미완주 데이터 저장
+                        coroutineSaveRaceRecord (createdRoomNo)
+                        goRaceHistoryDetail (createdRoomNo, MainActivity.loginId)
+
+                    })
+                    dlg.show()
+
+            }
+
+            if ( intent.getStringExtra("location") == "AlarmReceiver" ) {
+
+                var createdRoomNo = intent.getIntExtra("roomNo",0)
+                var runningStartTime = oftenUseMethod.mFormat.parse(intent.getStringExtra("longStartTime")).time
+
+                if (runningStartTime < System.currentTimeMillis()) {
+
+                    val dlg: AlertDialog.Builder = AlertDialog.Builder(this,  android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth)
+                    dlg.setMessage("경기가 시작되었습니다, 경기 룸으로 이동 하시겠습니까?") // 메시지
+                    dlg.setNeutralButton("경기 룸 이동", DialogInterface.OnClickListener { dialog, which ->
+
+                        // 유저를 러닝 중으로 상태 변경해줌
+                        coroutineActiveRunState(createdRoomNo)
+
+                        val intent = Intent(this, RunningActive::class.java)
+                        intent.putExtra("location","Home")
+                        intent.putExtra("roomNo", createdRoomNo)
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startActivity(intent)
+                        finish()
+
+
+                    })
+                    dlg.setNegativeButton ("경기 포기", DialogInterface.OnClickListener { dialog, which->
+
+                        // 경기 포기하게되면 미 완주에 기록 없음으로 표기
+                        // 미완주 데이터 저장
+                        coroutineSaveRaceRecord (createdRoomNo)
+                        goRaceHistoryDetail (createdRoomNo, MainActivity.loginId)
+
+                    })
+                    dlg.show()
+
+                } else {
+
+                    val intent = Intent(this, RoomDetail::class.java)
+                    intent.putExtra("location","Home")
+                    intent.putExtra("roomNo", createdRoomNo)
+                    startActivity(intent)
+
+                }
+            }
+
+        }
+
 
             if (MainActivity.loginProfileImgPath == "else") {
                 profileimgHome.setImageResource(R.drawable.user)
@@ -149,7 +225,7 @@ class Home : AppCompatActivity() {
 
             coroutineGetRoomData (page)
 
-        }
+
 
 
         // 방생성 activity로 이동하는 버튼
@@ -303,17 +379,26 @@ class Home : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         roomAdapter = RoomAdapter(this,list) {RoomItem ->
 
+            var runningStartTime = oftenUseMethod.mFormat.parse(RoomItem.getStartDate()!!.substring(0, 10)+ " " +RoomItem.getStartTime()).time
+
+            if (runningStartTime < System.currentTimeMillis()) {
+                dialogshow ("해당 룸의 러닝 시작 시간이 지나 입장할 수 없습니다.")
+                return@RoomAdapter
+            }
+
             // 남자만 입장가능한 룸에서 woman이거나 성별지정을 하지 않은 유저가 입장할때
             if ( RoomItem.getSortGender() == "남자만" && MainActivity.loginGender != "man" ) {
                 dialogshow ("해당룸은 남자만 입장 가능한 룸입니다.")
                 return@RoomAdapter
             }
-            Log.d(TAG,RoomItem.getSortGender()+"  "+MainActivity.loginGender)
+
             // 여자만 입장가능한 룸에서 man이거나 성별지정을 하지 않은 유저가 입장할때
             if ( RoomItem.getSortGender() == "여자만" && MainActivity.loginGender != "woman" ) {
                 dialogshow ("해당룸은 여자만 입장 가능한 룸입니다.")
                 return@RoomAdapter
             }
+
+
 
 
             intoRoom (RoomItem)
@@ -395,6 +480,17 @@ class Home : AppCompatActivity() {
 
     }
 
+    fun goRaceHistoryDetail (roomNo: Int, userId: Int) {
+
+        val intent = Intent(this, MyRaceHistoryDetail::class.java)
+        intent.putExtra("location","runningActive")
+        intent.putExtra("roomNo", roomNo)
+        intent.putExtra("userId", userId)
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        finish()
+    }
+
 
 
     fun createRoom () {
@@ -414,24 +510,54 @@ class Home : AppCompatActivity() {
         dlg.show()
     }
 
-    fun coroutineSaveRoomMember (roomNo:String, userId:Int) {
+    fun coroutineSaveRaceRecord (roomNo: Int) {
+
+        val progressDialog = ProgressDialog(this)
+        showProgressBar (progressDialog)
+
 
         CoroutineScope(Dispatchers.Main).launch { this
-            val html = CoroutineScope(Dispatchers.Default).async { this
-                // network
-                getHtml(roomNo, userId)
+            val saveRecord = CoroutineScope(Dispatchers.Default).async { this
+                saveRaceRecord(roomNo)
             }.await()
+            Log.d(TAG, saveRecord)
 
-//            Log.d(TAG,html)
+            dismissProgressBar(progressDialog)
+
         }
     }
 
-    fun getHtml(roomNo: String, userId: Int) : String {
+    fun saveRaceRecord(roomNo: Int): String {
+        Log.d(TAG, "saveRaceRecord " +  roomNo)
 
         val client = OkHttpClient.Builder().build()
-        val req = okhttp3.Request.Builder().url(Constants.URL+"/rooms/intoRoom?roomNo=$roomNo&userId=$userId").build()
+        val req = okhttp3.Request.Builder()
+            .url(Constants.URL + "/record/recordUpdateNotJoin?roomNo=$roomNo&userId=${MainActivity.loginId}").build()
+        client.newCall(req).execute().use { response ->
+            return if (response.body != null) {
+                response.body!!.string()
+            } else {
+                "body null"
+            }
+        }
+    }
+
+    fun coroutineActiveRunState (roomNo: Int) {
+
+        CoroutineScope(Dispatchers.Main).launch { this
+            val html = CoroutineScope(Dispatchers.Default).async { this
+                activeRunState(roomNo)
+            }.await()
+
+        }
+    }
+
+    fun activeRunState (roomNo: Int) : String {
+
+        val client = OkHttpClient.Builder().build()
+        val req = okhttp3.Request.Builder().url(Constants.URL + "/rooms/runningMember?roomNo=$roomNo&userId=${MainActivity.loginId}").build()
         client.newCall(req).execute().use {
-            response -> return if(response.body != null) {
+                response -> return if(response.body != null) {
             response.body!!.string()
         }
         else {
@@ -440,17 +566,14 @@ class Home : AppCompatActivity() {
         }
     }
 
-
-    inner class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int) :
-        RecyclerView.ItemDecoration() {
-
-        override fun getItemOffsets(
-            outRect: Rect, view: View, parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            outRect.bottom = verticalSpaceHeight
-        }
+    private fun showProgressBar(progressDialog: ProgressDialog) {
+        progressDialog.setTitle("러닝 기록 저장")
+        progressDialog.setMessage("러닝 기록을 저장하는 중 입니다.")
+        progressDialog.show()
     }
 
+    private fun dismissProgressBar(progressDialog: ProgressDialog) {
+        progressDialog.dismiss()
+    }
 
 }

@@ -94,21 +94,6 @@ class ProfileImgAdapter (var context: Context, val userList: ArrayList<RoomIntoU
         onItemClick = l
     }
 
-
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-//
-//        val layoutInflater = LayoutInflater.from(parent?.context)
-//        val view = layoutInflater.inflate(R.layout.item_room_into_user,parent,false)
-//        return Holder(view)
-//    }
-//
-//    override fun onBindViewHolder(holder: Holder, position: Int) {
-//
-//        holder?.bind(userList[position], context)
-//    }
-
-
-
     internal class footerHolder(itemView : View?) : RecyclerView.ViewHolder(itemView!!) {
 
         val ProfileImgItemPooter = itemView?.findViewById<ImageView>(R.id.ProfileImgItemPooter)
@@ -122,26 +107,6 @@ class ProfileImgAdapter (var context: Context, val userList: ArrayList<RoomIntoU
         val roomManager = itemView?.findViewById<ImageView>(R.id.roomManager)
         val nicknameItem = itemView?.findViewById<TextView>(R.id.nicknameItem)
 
-//        fun bind(user: RoomIntoUser, context: Context) {
-//
-//            if (user.getProfileImgUrl() != "else") {
-//                if (ProfileImgItem != null) {
-//                    Glide.with(context)
-//                        .load(Constants.URL +user.getProfileImgUrl())
-//                        .into(ProfileImgItem)
-//                }
-//            } else {
-//                ProfileImgItem?.setImageResource(R.drawable.avatar)
-//            }
-//
-//            ProfileImgItem?.setOnClickListener {
-//                user.getId()?.let { it1 -> coroutine (it1) }
-//                Toast.makeText(context,"2번 타입", Toast.LENGTH_SHORT).show()
-//            }
-//
-//            nicknameItem?.text = user.getNickname()
-//
-//        }
     }
 
 }

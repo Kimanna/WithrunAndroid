@@ -80,8 +80,23 @@ class ProfileIntroduce : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+
             "RoomDetail" -> {
                 val intent = Intent(this, RoomDetail::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                startActivity(intent)
+                finish()
+            }
+
+            "FollowingFragment" -> {
+                val intent = Intent(this, Follow::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                startActivity(intent)
+                finish()
+            }
+
+            "FollowerFragment" -> {
+                val intent = Intent(this, Follow::class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent)
                 finish()
@@ -238,6 +253,8 @@ class ProfileIntroduce : AppCompatActivity() {
 
         monthTotalRaceTime.text = (oftenUseMethod.twoDigitString((tempTotalRaceTime / (60 * 60) % 24).toLong()).toString() + " : " + oftenUseMethod.twoDigitString((tempTotalRaceTime / 60 % 60).toLong()) + " : "
                 + oftenUseMethod.twoDigitString((tempTotalRaceTime % 60).toLong()))
+        monthTotalDistance.text = (tempTotalDistance?.div(100)).toString() +"."+ oftenUseMethod.distanceDigitString((tempTotalDistance).toLong()) + " km "
+
         gold_medal.text = jsonArrayRecord.getJSONObject(0).getInt("gold_medal").toString()
         silver_medal.text = jsonArrayRecord.getJSONObject(0).getInt("silver_medal").toString()
         bronze_medal.text = jsonArrayRecord.getJSONObject(0).getInt("bronze_medal").toString()

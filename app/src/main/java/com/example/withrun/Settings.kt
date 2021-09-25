@@ -83,7 +83,7 @@ class Settings : AppCompatActivity() {
                 this,
                 android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth
             )
-            dlg.setMessage("위드런어플 회원 탈퇴를 하시겠습니까?") // 메시지
+            dlg.setMessage("위드런 회원 탈퇴를 하시겠습니까?") // 메시지
             dlg.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
 
                 coroutine ()
@@ -126,6 +126,12 @@ class Settings : AppCompatActivity() {
             dismissProgressBar(progressDialog)
 
             if (jsonObject1.toInt() == 1) { // 회원탈퇴완료
+
+                val prefs : SharedPreferences = getSharedPreferences("User", Context.MODE_PRIVATE)
+                val editor : SharedPreferences.Editor = prefs.edit()
+                editor.clear()
+                editor.commit()
+
                 dialog ()
             } else {
             }

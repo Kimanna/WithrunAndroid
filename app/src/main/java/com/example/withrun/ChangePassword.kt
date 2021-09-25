@@ -25,6 +25,7 @@ class ChangePassword : AppCompatActivity() {
 
     val TAG:String = "ChangePassword"
 
+    var tempTextString = ""
     var tempText:String = ""
     var passwordText:String = ""
     var passwordReText:String = ""
@@ -50,6 +51,7 @@ class ChangePassword : AppCompatActivity() {
                     textInputLayout3.error = "임시 비밀번호를 입력해 주세요"
                     return@setOnFocusChangeListener
                 }
+
                 tempPass = true
                 validate()
             }
@@ -137,6 +139,7 @@ class ChangePassword : AppCompatActivity() {
     }
 
 
+
     @SuppressLint("ResourceAsColor")
     fun validate() {
 
@@ -154,7 +157,7 @@ class ChangePassword : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch { this
             val html = CoroutineScope(Dispatchers.Default).async { this
                 // network
-                getHtml(email, tempText, hashSHA256(passwordText))
+                getHtml(email, tempText, passwordText)
             }.await()
 
             Log.d(TAG,html)

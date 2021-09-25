@@ -37,9 +37,9 @@ class NewMember : AppCompatActivity() {
             val dlg: AlertDialog.Builder = AlertDialog.Builder(this,  android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth)
             dlg.setMessage("뒤로가기 시 작성된 모든 내용은 저장되지 않습니다. 계속 하시겠습니까?") // 메시지
             dlg.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
-                val intent1 = Intent(this, MainActivity::class.java)
-                startActivity(intent1)
-                finish()
+
+                goMainActivity ()
+
             })
             dlg.setNegativeButton("취소", null)
             dlg.show()
@@ -159,7 +159,17 @@ class NewMember : AppCompatActivity() {
 
     }
 
+    fun goMainActivity () {
 
+        val intent = Intent(this, MainActivity::class.java)
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        startActivity(intent)
+        finish()
+    }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        goMainActivity ()
+    }
 
 }

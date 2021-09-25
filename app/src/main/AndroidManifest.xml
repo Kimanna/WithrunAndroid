@@ -28,7 +28,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Withrun">
-
+        <activity android:name=".MyRoomListFinish"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -36,16 +36,16 @@
 
         <activity android:name=".Notification" />
         <activity android:name=".MyRoomList" />
-
         <activity android:name=".MyRaceHistoryDetail" />
         <activity android:name=".Follow" />
         <activity android:name=".MyRaceHistory">
-<!--             <intent-filter> -->
-<!--             <action android:name="android.intent.action.MAIN" />-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-<!--             <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".RaceScore" />
         <activity android:name=".ProfileIntroduce" />
@@ -122,10 +122,10 @@
 
         <receiver
             android:name=".AlarmReceiver"
-            android:exported="false"></receiver>
+            android:exported="false" />
         <receiver
             android:name=".AlarmReceiverStartRun"
-            android:exported="false"></receiver>
+            android:exported="false" />
     </application>
 
 </manifest>

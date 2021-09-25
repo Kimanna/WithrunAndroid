@@ -1,5 +1,6 @@
 package com.example.withrun
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -51,16 +52,27 @@ class FollowingFragment : Fragment() {
         followingLV.layoutManager = LinearLayoutManager(activity)
         followingLV.adapter = activity?.let {
             FollowingAdapter(it, followingList) {
-//                Toast.makeText(activity, "클릭이벤트", Toast.LENGTH_SHORT).show()
+
+                goProfileIntroduce (it.getYouId()!!)
             }
         }
 
         suggestFollower.layoutManager = LinearLayoutManager(activity)
         suggestFollower.adapter = activity?.let {
             FollowingSuggestAdapter(it, followingSuggestList) {
-//                Toast.makeText(activity, "클릭이벤트", Toast.LENGTH_SHORT).show()
+
+                goProfileIntroduce (it.getYouId()!!)
             }
         }
+    }
+
+    fun goProfileIntroduce (profileUserId: Int) {
+
+        val intent = Intent (getActivity(), ProfileIntroduce::class.java)
+        intent.putExtra("profileUserId", profileUserId)
+        intent.putExtra("location", "FollowingFragment")
+        getActivity()?.startActivity(intent)
+
     }
 
     fun coroutinegetFollowData() {

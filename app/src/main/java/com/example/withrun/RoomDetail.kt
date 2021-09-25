@@ -15,12 +15,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import okhttp3.internal.wait
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.thread
 
 
 class RoomDetail : AppCompatActivity() {
@@ -61,6 +63,7 @@ class RoomDetail : AppCompatActivity() {
 
         var currentServerTime: Long = 0
 
+        var baseLocation: String = ""
     }
 
 
@@ -68,20 +71,17 @@ class RoomDetail : AppCompatActivity() {
     var adapter: ProfileImgAdapter? = null
 
 
-    val CHANNEL_ID: String = "MY_CH"
-    val channel_name: String = "CHANNEL_1"
-    val notificationId: Int = 1001
     var notification = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_detail)
 
-//        mHandler = Handler()
 
         var intent = intent
         if (!TextUtils.isEmpty(intent.getStringExtra("location"))) {
             roomNo2 = intent.getIntExtra("roomNo", 0)
+            baseLocation = intent.getStringExtra("location")
             Log.d(TAG, "getIntent 결과 : " + intent.getStringExtra("location"))
             Log.d(TAG, "getIntent 결과 : " + roomNo2)
 
@@ -91,7 +91,7 @@ class RoomDetail : AppCompatActivity() {
                 intoUser = false
 
                 // 해당 룸데이터와, 참가인원 조회
-                coroutineGetRoomInfo(RoomDetail.roomNo2, 0)
+                coroutineGetRoomInfo(roomNo2, 0)
 
 
         }
@@ -186,6 +186,9 @@ class RoomDetail : AppCompatActivity() {
             connectSocket()
         }
 
+        Log.d(TAG, "longStartTime 출력해봄 "  + longStartTime)
+
+
         // fragment convert
         connectFragment ()
 
@@ -219,9 +222,9 @@ class RoomDetail : AppCompatActivity() {
 
             getInOutRoom (roomNo2, MainActivity.loginId, "intoRoom")
 
+
         }
     }
-
 
     // fragment 연결하는 adapter
     fun connectFragment () {
@@ -261,8 +264,7 @@ class RoomDetail : AppCompatActivity() {
 
             override fun onPageScrollStateChanged(state: Int) { }
         })
-//        mViewPager.setOnPageChangeListener(pageChangeListener);
-//        pageChangeListener.onPageSelected(0);
+
     }
 
     fun coroutineGetMessage (roomNo: Int, meId: Int) {
@@ -357,10 +359,7 @@ class RoomDetail : AppCompatActivity() {
         // --------------------------------------------------------------------------------뒤로가기 아이콘 클릭시
         back_Home.setOnClickListener {
             // 해당방을 나갈 시 roomMembers 에서 해당 userId 제거 후 홈 액티비티로 이동
-            val intent = Intent(this, Home::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(intent)
-            finish()
+            goBack ()
         }
     }
 
@@ -370,32 +369,46 @@ class RoomDetail : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
 
-        val intent = Intent(this, Home::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
-        finish()
+        goBack ()
+
     }
 
-//    private fun createNotificationChannel (
-//        builder: NotificationCompat.Builder,
-//        notificationId: Int
-//    ) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val descriptionText = "withrun timer"
-//            val importance = NotificationManager.IMPORTANCE_DEFAULT
-//            val channel = NotificationChannel(CHANNEL_ID, channel_name, importance).apply {
-//                description = descriptionText
-//            }
-//            // Register the channel with the system
-//            val notificationManager: NotificationManager =
-//                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            notificationManager.createNotificationChannel(channel)
-//
-//            notificationManager.notify(notificationId, builder.build())
-//        }
-//
-//    }
-//
+    fun goBack () {
+
+        when (baseLocation) {
+            "Home" -> {// 플래그 필요없음
+
+                val intent = Intent(this, Home::class.java)
+                intent.putExtra("location","RoomDetail")
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                finish()
+
+
+            }
+            "Notification" -> { // 플래그 추가
+
+                val intent = Intent(this, Notification::class.java)
+                intent.putExtra("location","RoomDetail")
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                finish()
+
+            }
+
+            "CreateRoom" -> {// 플래그 필요없음
+
+                val intent = Intent(this, Home::class.java)
+                intent.putExtra("location","RoomDetail")
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                finish()
+
+
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 

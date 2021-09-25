@@ -57,10 +57,8 @@ class FollowerFragment : Fragment() {
         requestFollower.adapter = activity?.let {
             FollowerRequestAdapter(it, followRequestList) {
 
-                Toast.makeText(activity, "클릭이벤트"+it.getYouId(), Toast.LENGTH_SHORT).show()
-
                 // 클릭한 user profile 확인할 수 있는 activity 로 전환
-                intoRoom (it.getYouId()!!)
+                goProfileIntroduce (it.getYouId()!!)
 
             }
         }
@@ -69,19 +67,18 @@ class FollowerFragment : Fragment() {
         followerList.adapter = activity?.let {
             FollowerAdapter(it, followList) {
 
-                Toast.makeText(activity, "클릭이벤트",Toast.LENGTH_SHORT).show()
+                goProfileIntroduce (it.getYouId()!!)
             }
         }
 
     }
 
-    // 방으로 입장하는 intent - 2 가지 루트
-    // 1. 아이템 클릭시, 2. 초대시 전달 받은 nitification을 통해
-    fun intoRoom (userId: Int) {
+    fun goProfileIntroduce (profileUserId: Int) {
 
-        val intent = Intent(activity, ProfileIntroduce::class.java)
-        intent.putExtra("profileUserId",userId)
-        startActivity(intent)
+        val intent = Intent (getActivity(), ProfileIntroduce::class.java)
+        intent.putExtra("profileUserId", profileUserId)
+        intent.putExtra("location", "FollowerFragment")
+        getActivity()?.startActivity(intent)
 
     }
 
@@ -102,7 +99,6 @@ class FollowerFragment : Fragment() {
             val jsonArray = jsonObject.getJSONArray("result")
 
             for (i in 0..jsonArray.length() - 1) {
-                Log.d(TAG, "i for문 안쪽 " + i)
 
                 var follows = Follow_object()
                 follows.setYouId(jsonArray.getJSONObject(i).getInt("youId"))

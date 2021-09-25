@@ -38,36 +38,7 @@ class MyRaceHistory : AppCompatActivity() {
         setContentView(R.layout.activity_my_race_history)
 
 
-
         monthArrayList = mutableListOf()
-
-
-        val items = resources.getStringArray(R.array.my_race_record)
-        val myAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
-
-//        categorizeByDate.adapter = myAdapter
-//        categorizeByDate.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-//
-//                //아이템이 클릭 되면 맨 위부터 position 0번부터 순서대로 동작하게 됩니다.
-//                when(position) {
-//                    0   ->  {
-//
-//                    }
-//                    1   ->  {
-//
-//                    }
-//                    //...
-//                    else -> {
-//
-//                    }
-//                }
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>) {
-//
-//            }
-//        }
 
         coroutinegetMyRecord ("begin")
         setRecyclerView()

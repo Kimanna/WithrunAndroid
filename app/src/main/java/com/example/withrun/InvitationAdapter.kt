@@ -85,38 +85,6 @@ class InvitationAdapter(val context: Context, val userList: ArrayList<RoomIntoUs
         val InvitationBT = itemView?.findViewById<Button>(R.id.InvitationBT)
         val Invited = itemView?.findViewById<Button>(R.id.Invited)
 
-//        @SuppressLint("ResourceAsColor")
-//        fun bind(user: RoomIntoUser, context: Context) {
-//
-//            if (user.getRoomManager()!!) {
-//                itemView.run { setBackgroundColor(R.color.colorSlateGray) }
-//                chooseManager?.visibility = View.VISIBLE
-//            }
-//
-//
-//            if (itemClick != null) {
-//                itemView?.setOnClickListener { view ->
-//                    itemClick?.onClick(view, position)
-//
-//                    Log.d(TAG, "어댑터 클릭 ")
-//
-//                }
-//            }
-//
-//
-//            if (user.getProfileImgUrl() != "else") {
-//                if (ProfileImgItemManager != null) {
-//                    Glide.with(context)
-//                        .load(Constants.URL + user.getProfileImgUrl())
-//                        .into(ProfileImgItemManager)
-//                }
-//            } else {
-//                ProfileImgItemManager?.setImageResource(R.drawable.user)
-//            }
-//
-//            nicknameItemManager?.text = user.getNickname()
-//
-//        }
     }
 
 }

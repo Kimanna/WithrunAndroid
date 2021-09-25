@@ -191,12 +191,11 @@ object oftenUseMethod {
 
     fun timeStringToLongSeoul (time: String): Long {
 
-        val mFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.KOREA)
+        val mFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss.SSSXXX", Locale.KOREA)
         mFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         val TimeLong = mFormat.parse(time).time
 
         val sdfOutput = SimpleDateFormat("yyyy-MM-dd kk:mm:ss")
-//        sdfOutput.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         val formatted = sdfOutput.format(TimeLong)
 
         Log.d("시간출력 simpledateformat", TimeLong.toString() + " " + formatted )

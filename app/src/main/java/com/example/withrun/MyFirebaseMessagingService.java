@@ -33,7 +33,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        // if(!isAppRunning(getApplicationContext())) { //백그라운드일떄만 보낸다.
+        // if(!isAppRunning(getApplicationContext())) { //백그라운드일때만 보낸다.
         //json 데이터 페이로드
         String title = remoteMessage.getData().get("title");
         String message = remoteMessage.getData().get("body");
@@ -88,8 +88,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.putExtra("location", "Notification");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
+            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
             notifyId = 1;
         }
         else if(object instanceof Follow_object){

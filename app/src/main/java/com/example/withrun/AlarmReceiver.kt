@@ -24,27 +24,26 @@ class AlarmReceiver: BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG, "Received intent roomno : ${intent.getIntExtra("roomNo",0)}")
+
         notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         createNotificationChannel()
         deliverNotification(context, intent)
 
-//        val goRoomIntent = Intent(context, RoomDetail::class.java)
-//        goRoomIntent.putExtra("roomNo", intent.getStringExtra("roomNo"))
-//        goRoomIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        context.startActivity(goRoomIntent)
     }
 
     private fun deliverNotification(context: Context, intent: Intent) {
-        val contentIntent = Intent(context, RoomDetail::class.java)
+        val contentIntent = Intent(context, Home::class.java)
+        contentIntent.putExtra("location","AlarmReceiver")
         contentIntent.putExtra("roomNo", intent.getIntExtra("roomNo",0))
+        contentIntent.putExtra("longStartTime", intent.getStringExtra("longStartTime"))
         contentIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val contentPendingIntent = PendingIntent.getActivity(
             context,
             NOTIFICATION_ID,
             contentIntent,
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val builder =
@@ -69,7 +68,7 @@ class AlarmReceiver: BroadcastReceiver() {
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.RED
             notificationChannel.enableVibration(true)
-            notificationChannel.description = "AlarmManager Tests"
+            notificationChannel.description = "AlarmManager"
             notificationManager.createNotificationChannel(
                 notificationChannel)
         }

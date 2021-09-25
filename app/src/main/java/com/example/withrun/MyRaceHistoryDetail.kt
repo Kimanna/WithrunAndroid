@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.text.TextUtils
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -52,13 +54,36 @@ class MyRaceHistoryDetail : AppCompatActivity() {
         }
 
 
-
-
         // 보여줄 record 데이터 get 통신 하는 부분 --------------------------------------------------- test 가 끝나면 roomno 로 변경해줘야함
         coroutineGetDetailRecord(roomNo)
 
         backBT.setOnClickListener {
             moveActivity()
+        }
+
+
+        /*기록 삭제 버튼
+        * 유저 기록 보기와 활동내역에서만 가려짐 */
+        deleteRecordBT.setOnClickListener {
+
+            val popupMenu = PopupMenu(this, deleteRecordBT, Gravity.RIGHT)
+            popupMenu.inflate(R.menu.delete)
+
+            popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.deleteBT -> {
+
+                        coroutineDeleteRecord(roomNo, MainActivity.loginId)
+
+                        moveActivity()
+
+                        true
+                    }
+                    else -> false
+                }
+            })
+            popupMenu.show()
+
         }
 
     }
@@ -106,6 +131,16 @@ class MyRaceHistoryDetail : AppCompatActivity() {
             "MyRoomList" -> { // 플래그 추가
 
                 val intent = Intent(this, MyRanking::class.java)
+                intent.putExtra("location","MyRaceHistoryDetail")
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                finish()
+
+            }
+
+            "MyRoomListFinish" -> { // 플래그 추가
+
+                val intent = Intent(this, MyRoomListFinish::class.java)
                 intent.putExtra("location","MyRaceHistoryDetail")
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
@@ -261,6 +296,10 @@ class MyRaceHistoryDetail : AppCompatActivity() {
         }
 
             when (myRanking) {
+                0 -> {
+                    rankImg.setBackgroundResource(R.drawable.party_popper)
+                    rankRecord.text = "순위없음"
+                }
                 1 -> {
                     rankImg.setBackgroundResource(R.drawable.medal_gold)
                     rankRecord.text = "금메달"
@@ -275,7 +314,7 @@ class MyRaceHistoryDetail : AppCompatActivity() {
                 }
                 else -> {
                     rankImg.setBackgroundResource(R.drawable.party_popper)
-                    rankRecord.text = "순위없음"
+                    rankRecord.text = myRanking.toString() + " 위"
                 }
             }
 
@@ -292,6 +331,33 @@ class MyRaceHistoryDetail : AppCompatActivity() {
         rvRaceHistory.layoutManager = LinearLayoutManager(this)
         rvRaceHistory.adapter = MyRaceHistoryDetailAdapter(this, list) {
 
+        }
+    }
+
+    private fun coroutineDeleteRecord (roomNo: Int, userId: Int) {
+        CoroutineScope(Dispatchers.Main).launch {
+            this
+            val deleteRecord = CoroutineScope(Dispatchers.Default).async {
+                this
+                deleteRecord(roomNo, userId)
+            }.await()
+            Log.d(TAG, "deleteRecordSuccessInfo " + deleteRecord)
+
+        }
+    }
+
+    fun deleteRecord(roomNo: Int, userId: Int): String {
+
+        val client = OkHttpClient.Builder().build()
+        val req = okhttp3.Request.Builder()
+            .url(Constants.URL + "/record/deleteRecord?userId=$userId&roomNo=$roomNo")
+            .build()
+        client.newCall(req).execute().use { response ->
+            return if (response.body != null) {
+                response.body!!.string()
+            } else {
+                "body null"
+            }
         }
     }
 

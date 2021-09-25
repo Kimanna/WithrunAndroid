@@ -1,5 +1,6 @@
 package com.example.withrun
 
+import android.app.ActivityManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,14 +10,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.support.v4.app.NotificationCompat
-import android.support.v4.content.ContextCompat.startActivity
 import android.util.Log
 
 class AlarmReceiverStartRun: BroadcastReceiver() {
 
     companion object {
         const val TAG = "AlarmReceiver"
-        const val NOTIFICATION_ID = 5
+        const val NOTIFICATION_ID = 0
         const val PRIMARY_CHANNEL_ID = "primary_notification_channel"
     }
 
@@ -24,24 +24,28 @@ class AlarmReceiverStartRun: BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG, "Received intent roomno : ${intent.getIntExtra("roomNo",0)}")
-        notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        createNotificationChannel()
-        deliverNotification(context, intent)
+            notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            createNotificationChannel()
+            deliverNotification(context, intent)
+
 
     }
 
     private fun deliverNotification(context: Context, intent: Intent) {
-        val contentIntent = Intent(context, RunningActive::class.java)
+        val contentIntent = Intent(context, Home::class.java)
         contentIntent.putExtra("location","AlarmReceiverStartRun")
         contentIntent.putExtra("roomNo", intent.getIntExtra("roomNo",0))
+        contentIntent.putExtra("longStartTime", intent.getStringExtra("longStartTime"))
+
         contentIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val contentPendingIntent = PendingIntent.getActivity(
             context,
             NOTIFICATION_ID,
             contentIntent,
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val builder =
@@ -66,10 +70,24 @@ class AlarmReceiverStartRun: BroadcastReceiver() {
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.RED
             notificationChannel.enableVibration(true)
-            notificationChannel.description = "AlarmManager Tests"
+            notificationChannel.description = "AlarmManager"
             notificationManager.createNotificationChannel(
                 notificationChannel)
         }
+    }
+
+    //백그라운드일때만 푸시메세지 보내고싶을 때 사용
+    private fun isAppRunning(context: Context): Boolean {
+        val activityManager =
+            context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val procInfos = activityManager.runningAppProcesses
+        for (i in procInfos.indices) {
+            if (procInfos[i].processName == context.packageName) {
+                Log.d(TAG, procInfos[i].processName)
+                return true
+            }
+        }
+        return false
     }
 
 }

@@ -164,7 +164,7 @@ class  Follow_object() : Parcelable {
     }
 
     fun getFcmToken(): String? {
-        return acceptAt
+        return fcmToken
     }
 
     fun setFcmToken(fcmToken: String?) {

@@ -80,6 +80,8 @@ class ReviseProfile : AppCompatActivity() {
 
     var gender_fix: String? = "else"
 
+    var isChangeProfile = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_revise_profile)
@@ -125,6 +127,8 @@ class ReviseProfile : AppCompatActivity() {
                 height_fix = numberPicker.value
                 proheight.setText(height_fix.toString()+" cm")
 
+                setUseableTextView(updateBt, true)          // 수정버튼 활성화
+
                 dialog.dismiss()
                 dialog.cancel()
 
@@ -164,6 +168,8 @@ class ReviseProfile : AppCompatActivity() {
                 weight_fix = numberPicker1.value
                 proweight.setText(weight_fix.toString()+" kg")
 
+                setUseableTextView(updateBt, true)          // 수정버튼 활성화
+
                 dialog1.dismiss()
                 dialog1.cancel()
 
@@ -190,6 +196,7 @@ class ReviseProfile : AppCompatActivity() {
                         Log.d(TAG, "else")
                     }
                 }
+                setUseableTextView(updateBt, true)          // 수정버튼 활성화
             }
         }
 
@@ -356,7 +363,7 @@ class ReviseProfile : AppCompatActivity() {
             }.await()
             Log.d(TAG,html)
 
-            val jsonArray = JSONArray(html).getJSONObject(0)
+            val jsonArray = JSONObject(html).getJSONArray("result").getJSONObject(0)
 
 
             val saveShared = getSharedPreferences("User", Context.MODE_PRIVATE)
@@ -626,6 +633,8 @@ class ReviseProfile : AppCompatActivity() {
                 day = if (ck_day < 10) "0" + ck_day.toString() else ck_day.toString()
 
                 Log.d(TAG, year+month+day)
+
+                setUseableTextView(updateBt, true)          // 수정버튼 활성화
             })
         }
 
@@ -638,8 +647,9 @@ class ReviseProfile : AppCompatActivity() {
     }
 
     fun goProfile () {
+
         val intent = Intent(this, Profile::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
         finish()
     }

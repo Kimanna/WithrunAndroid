@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.provider.ContactsContract
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -72,7 +73,7 @@ class FollowingSuggestAdapter(val context: Context, val followingSuggestList: Ar
 
             followBT!!.setOnClickListener {
 
-                coroutineRequestFollow (MainActivity.loginId, user.getYouId()!!, oftenUseMethod.dateFormatSaveDB(System.currentTimeMillis()))
+                coroutineRequestFollow (MainActivity.loginId, user.getYouId()!!, oftenUseMethod.dateFormatSaveDB(System.currentTimeMillis()), user.getYouNickname()!!, user.getFcmToken()!!, user.getRecordOpenStatus()!!)
 
                 // 통신 후 비공개 계정인지 확인하여 팔로잉 혹은 팔로우 요청을 보냄
                 when(user.getRecordOpenStatus()){
@@ -154,7 +155,7 @@ class FollowingSuggestAdapter(val context: Context, val followingSuggestList: Ar
         }
     }
 
-    fun coroutineRequestFollow (follower: Int, following: Int, requestAt: String) {
+    fun coroutineRequestFollow (follower: Int, following: Int, requestAt: String, followingNickname: String, followingFCMtoken: String, followingRecordOpenState: Int) {
         Log.d(TAG,"서버로 저장할 데이터 확인 "+ follower +" "+ following +" "+ requestAt)
 
         CoroutineScope(Dispatchers.Main).launch { this
@@ -164,50 +165,41 @@ class FollowingSuggestAdapter(val context: Context, val followingSuggestList: Ar
 
             Log.d(TAG,"80 line "+ requestFollow)
 
-//            sendNotiFollow (JSONObject(requestFollow).getInt("result"))
+            sendNotiFollow (JSONObject(requestFollow).getInt("result"), follower, following, followingNickname, followingFCMtoken, followingRecordOpenState)
 
         }
     }
 
-//    fun sendNotiFollow (followUniqueNo: Int) {
-//
-//        var followRequest = Follow_object()
-//        followRequest.setYouId(profileUserId)
-//        followRequest.setYouNickname(profileUserNickname)
-//        followRequest.setMeId(MainActivity.loginId)
-//        followRequest.setMeNickname(MainActivity.loginNickname)
-//        followRequest.setUniqueNo(followUniqueNo)
-//
-//
-//        var notiTitle = ""
-//        var notiMessage = ""
-//
-//        if (recordOpenStatus == 1) { // 공개 계정
-//
-//            notiTitle = "팔로우"
-//            notiMessage = MainActivity.loginNickname + " 님께서 회원님을 팔로우 했습니다."
-//
-//            requestFollowBT.visibility = View.GONE
-//            acceptFollowBT.visibility = View.VISIBLE
-//
-//            Toast.makeText(context,"팔로우 했습니다.", Toast.LENGTH_SHORT).show()
-//
-//        } else {                     // 비공개 계정
-//
-//            notiTitle = "팔로우 요청"
-//            notiMessage = MainActivity.loginNickname + " 님께서 회원님을 팔로우 하고 싶어합니다."
-//
-//            requestFollowBT.visibility = View.GONE
-//            RequestedFollowBT.visibility = View.VISIBLE
-//
-//            Toast.makeText(context,"팔로우 요청을 했습니다.", Toast.LENGTH_SHORT).show()
-//
-//        }
-//
-//        // 초대한 유저 noti (FCM) 전송
-//        SendNotification.sendNotification(profileUserToken, notiTitle, notiMessage,"1", followRequest)
-//
-//    }
+    fun sendNotiFollow (followUniqueNo: Int, follower: Int, following: Int, followingNickname: String, followingFCMtoken: String, followingRecordOpenState: Int) {
+        Log.d(TAG,"sendNotiFollow "+ followUniqueNo + " " + following + " " + followingNickname + " " + followingFCMtoken + " " + followingRecordOpenState)
+
+        var followRequest = Follow_object()
+        followRequest.setYouId(following)
+        followRequest.setYouNickname(followingNickname)
+        followRequest.setMeId(MainActivity.loginId)
+        followRequest.setMeNickname(MainActivity.loginNickname)
+        followRequest.setUniqueNo(followUniqueNo)
+
+
+        var notiTitle = ""
+        var notiMessage = ""
+
+        if (followingRecordOpenState == 1) { // 공개 계정
+
+            notiTitle = "팔로우"
+            notiMessage = MainActivity.loginNickname + " 님께서 회원님을 팔로우 했습니다."
+
+        } else {                     // 비공개 계정
+
+            notiTitle = "팔로우 요청"
+            notiMessage = MainActivity.loginNickname + " 님께서 회원님을 팔로우 하고 싶어합니다."
+
+        }
+
+        // 초대한 유저 noti (FCM) 전송
+        SendNotification.sendNotification(followingFCMtoken, notiTitle, notiMessage,"1", followRequest)
+
+    }
 
     fun RequestFollow (follower: Int, following: Int, requestAt: String) : String  {
 

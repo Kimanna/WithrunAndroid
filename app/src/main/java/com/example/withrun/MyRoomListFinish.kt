@@ -1,23 +1,15 @@
 package com.example.withrun
 
-import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Rect
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.Gravity
-import android.view.View
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_my_race_history_detail.*
 import kotlinx.android.synthetic.main.activity_my_room_list.*
-import kotlinx.android.synthetic.main.activity_my_room_list.recyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -26,13 +18,13 @@ import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONObject
 
-class MyRoomList : AppCompatActivity() {
+class MyRoomListFinish : AppCompatActivity() {
 
-    val TAG : String = "MyRoomList"
+    val TAG : String = "MyRoomListFinish"
 
     private var roomAdapter: RoomAdapter? = null
     private var page = 0 // 현재 페이지
-    private var allRoomCount = 0 // 생성된 룸의 총 갯수
+    private var allRoomCount = 0 // 종료된 룸의 총 갯수
 
     var isLoading = false
     var list: ArrayList<RoomItem> = ArrayList()
@@ -41,89 +33,36 @@ class MyRoomList : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_my_room_list)
+        setContentView(R.layout.activity_my_room_list_finish)
 
         back_Home.setOnClickListener{
-            val intent = Intent(this, Home::class.java)
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
-            finish()
-        }
-        coroutineGetRoomData (page)
 
+            goBack ()
+
+        }
+
+        coroutineGetRoomData (0)
         recyclerView ()
-        initScrollListener() // 스크롤 마지막인지 감지
 
-        finishGameList.setOnClickListener {
-
-            val popupMenu = PopupMenu(this, finishGameList, Gravity.RIGHT)
-            popupMenu.inflate(R.menu.finishroom)
-
-            popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.deleteBT -> {
-
-                        val intent = Intent(this, MyRoomListFinish::class.java)
-                        intent.putExtra("location","MyRoomList")
-//                        intent.putExtra("roomNo",RoomItem.getNo())
-                        startActivity(intent)
-
-                        true
-                    }
-                    else -> false
-                }
-            })
-            popupMenu.show()
-
-        }
     }
 
 
-    // 리싸이클러뷰 실행
-    // 아이템 클릭시 해당 룸으로 입장안내문구띄움, 안내문구 확인 시 해당 룸넘버 intent 로 전달
+
     fun recyclerView () {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         roomAdapter = RoomAdapter(this,list) {RoomItem ->
 
-            // 룽에서 지정한 경기 시작시간이 경과한 경우 (5분이내) RunningActive 로 바로 이동
-            if (oftenUseMethod.mFormat.parse(RoomItem.getStartDate()?.substring(0,10)+" "+RoomItem.getStartTime()).time < System.currentTimeMillis()) {
+            val dlg: AlertDialog.Builder = AlertDialog.Builder(this,  android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth)
+            dlg.setMessage("경기 기록을 보시겠습니까?") // 메시지
+            dlg.setNeutralButton("경기 기록 보기", DialogInterface.OnClickListener { dialog, which ->
 
-                val dlg: AlertDialog.Builder = AlertDialog.Builder(this,  android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth)
-                dlg.setMessage("경기가 시작되었습니다, 경기 룸으로 이동 하시겠습니까?") // 메시지
-                dlg.setNeutralButton("경기 룸 이동", DialogInterface.OnClickListener { dialog, which ->
-                    Log.d(TAG, "setNeutralButton : " + RoomItem.getNo())
+                goRaceHistoryDetail (RoomItem.getNo()!!, MainActivity.loginId)
 
-
-                    // 러닝 경기 룸 입장 코드
-                    goRunningActive (RoomItem.getNo()!!)
-
-
-                })
-                dlg.setNegativeButton ("경기 포기", DialogInterface.OnClickListener { dialog, which->
-                    Log.d(TAG, "setNegativeButton : " + RoomItem.getNo())
-
-                    // 경기 포기하게되면 미 완주에 기록 없음으로 표기
-                    // 미완주 데이터 저장
-                    coroutineSaveRaceRecord (RoomItem.getNo()!!)
-                    goRaceHistoryDetail (RoomItem.getNo()!!, MainActivity.loginId)
-
-                })
-                dlg.show()
-
-            } else {
-
-                val intent = Intent(this, RoomDetail::class.java)
-                intent.putExtra("location","MyRoomList")
-                intent.putExtra("roomNo",RoomItem.getNo())
-                intent.putExtra("intoUserId", MainActivity.loginId)
-                intent.putExtra("aloneMode", RoomItem.getAloneMode())
-                intent.putExtra("longStartTime",RoomItem.getStartDate()?.substring(0,10)+" "+RoomItem.getStartTime())
-                startActivity(intent)
-
-            }
-
-
+            })
+            dlg.setNegativeButton ("취소", DialogInterface.OnClickListener { dialog, which->
+            })
+            dlg.show()
 
         }
         recyclerView.adapter = roomAdapter
@@ -185,60 +124,6 @@ class MyRoomList : AppCompatActivity() {
             isLoading = false
 
         }, 2000)
-    }
-
-    fun coroutineSaveRaceRecord (roomNo: Int) {
-
-        val progressDialog = ProgressDialog(this)
-        showProgressBar (progressDialog)
-
-
-        CoroutineScope(Dispatchers.Main).launch { this
-            val saveRecord = CoroutineScope(Dispatchers.Default).async { this
-                saveRaceRecord(roomNo)
-            }.await()
-            Log.d(TAG, saveRecord)
-
-            dismissProgressBar(progressDialog)
-
-        }
-    }
-
-    fun saveRaceRecord(roomNo: Int): String {
-        Log.d(TAG, "saveRaceRecord " +  roomNo)
-
-        val client = OkHttpClient.Builder().build()
-        val req = okhttp3.Request.Builder()
-            .url(Constants.URL + "/record/recordUpdateNotJoin?roomNo=$roomNo&userId=${MainActivity.loginId}").build()
-        client.newCall(req).execute().use { response ->
-            return if (response.body != null) {
-                response.body!!.string()
-            } else {
-                "body null"
-            }
-        }
-    }
-
-    fun goRunningActive (roomNo: Int) {
-
-        val intent = Intent(this, RunningActive::class.java)
-        intent.putExtra("roomNo", roomNo)
-        intent.putExtra("location","MyRoomList")
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(intent)
-        finish()
-
-    }
-
-    fun goRaceHistoryDetail (roomNo: Int, userId: Int) {
-
-        val intent = Intent(this, MyRaceHistoryDetail::class.java)
-        intent.putExtra("location","MyRoomList")
-        intent.putExtra("roomNo", roomNo)
-        intent.putExtra("userId", userId)
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(intent)
-        finish()
     }
 
 
@@ -328,7 +213,7 @@ class MyRoomList : AppCompatActivity() {
     fun getRooms (pageNo: Int) : String {
 
         val client = OkHttpClient.Builder().build()
-        val req = okhttp3.Request.Builder().url(Constants.URL + "/rooms/myRoom?userId=${MainActivity.loginId}&pageNo=$pageNo").build()
+        val req = okhttp3.Request.Builder().url(Constants.URL + "/rooms/myRoomFinish?userId=${MainActivity.loginId}&pageNo=$pageNo").build()
         client.newCall(req).execute().use {
                 response -> return if(response.body != null) {
             response.body!!.string()
@@ -339,24 +224,28 @@ class MyRoomList : AppCompatActivity() {
         }
     }
 
-    private fun showProgressBar(progressDialog: ProgressDialog) {
-        progressDialog.setTitle("러닝 기록 저장")
-        progressDialog.setMessage("러닝 기록을 저장하는 중 입니다.")
-        progressDialog.show()
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        goBack()
+
     }
 
-    private fun dismissProgressBar(progressDialog: ProgressDialog) {
-        progressDialog.dismiss()
+    fun goBack () {
+
+        val intent = Intent(this, MyRoomList::class.java)
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        finish()
     }
 
-    inner class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int) :
-        RecyclerView.ItemDecoration() {
+    fun goRaceHistoryDetail (roomNo: Int, userId: Int) {
 
-        override fun getItemOffsets(
-            outRect: Rect, view: View, parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            outRect.bottom = verticalSpaceHeight
-        }
+        val intent = Intent(this, MyRaceHistoryDetail::class.java)
+        intent.putExtra("location","MyRoomListFinish")
+        intent.putExtra("roomNo", roomNo)
+        intent.putExtra("userId", userId)
+        startActivity(intent)
+        finish()
     }
 }

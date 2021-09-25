@@ -36,6 +36,7 @@ import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.thread
 
 class RoomInformationFragment : Fragment(), View.OnClickListener {
 
@@ -46,9 +47,6 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
 
     var alarmManager: AlarmManager? = null
     var pendingIntent: PendingIntent? = null
-
-    var alarmManager2: AlarmManager? = null
-    var pendingIntent2: PendingIntent? = null
 
     lateinit var startGametimer: CountDownTimer
     var isRunningStartGametimer = false // CountDownTimer 가 실행 중인지 check 하는 boolean
@@ -78,7 +76,6 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
         val roomNo: Int? = activity?.getRoomData()
         Log.d(TAG, "acticity 에서 전달한 bundle값 확인 " + roomNo)
 
-
         longStartTimeAlarm = mFormat.parse(RoomDetail.longStartTime).time - 600000 // 러닝 시작시간 10분 전 시간을 변수에 선언해 놓음
         Log.d(TAG, "러닝 10분전 시간 출력 "+ convertLongToTime(longStartTimeAlarm!!))
 
@@ -91,17 +88,21 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
         // 룸정보 setting
         setRoomData(RoomDetail.jsonArray!!)
 
+        if (RoomDetail.baseLocation == "CreateRoom") {
+            startAlarmManager() // alarmManager 러닝 10분전 notification 등록
+            startAlarmManagerStartRun () // alarmManager 러닝 시작 notification
+        }
 
     }
 
     override fun onStart() {
         super.onStart()
 
-        if ( longStartTimeAlarm!! < System.currentTimeMillis() ) {
+        /*러닝 시작 10분 전이거나 타이머가 작동되고있지 않은 상태라면 timer 시작*/
+        if ( !isRunningStartGametimer) {
             runStartTimer() // 타이머 작동
-        } else {
-//            startAlarmManager() // alarmManager 러닝 10분전 notification
         }
+
     }
 
     override fun onResume() {
@@ -131,12 +132,12 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
 
                             coroutineRoomIntoOut ("leaveWithDeleteRoom", MainActivity.loginId, RoomDetail.roomNo2, MainActivity.loginNickname )
 
-                            alarmManager!!.cancel(pendingIntent)    // 룸 시작 시간 알람매니저 timer 취소
 
-                            val intent = Intent (getActivity(), Home::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            getActivity()?.startActivity(intent)
-                            getActivity()?.finish()
+                            // 룸 시작 시간 알람매니저 취소
+                            cancelAlarmManager ()
+                            cancelAlarmManagerStartRun()
+
+                            goHome ()
 
                                 // ---------------------------------------------------------------------------------------------------------------방삭제, 방에참가중인 유저삭제 코드
                             })
@@ -148,15 +149,6 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
 
                         // 다음 방장 지목하는 창 띄워줌
                         transferManager(list)
-
-                        // 룸 참가 취소 인원 DB 테이블에 유저 저장 후 message 테이블에도 참가취소 내역 저장 -----------------------------------------------------------------------------------------------------------    유저 삭제 통신 코드 테스트해야함
-                        coroutineRoomIntoOut ("leaveRoom", MainActivity.loginId, RoomDetail.roomNo2, MainActivity.loginNickname) // 해당 테이블에서 유저 삭제
-                        getInOutRoom (RoomDetail.roomNo2, MainActivity.loginId, "exitRoom/${MainActivity.loginNickname} 님이 참가를 취소 하였습니다./${currentTime}/${MainActivity.loginNickname}") // HashMap 안에 socket 정보 지워줌
-
-                        val intent = Intent (getActivity(), Home::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        getActivity()?.startActivity(intent)
-                        getActivity()?.finish()
 
                     }
 
@@ -171,13 +163,11 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
                         coroutineRoomIntoOut ("leaveRoom", MainActivity.loginId, RoomDetail.roomNo2, MainActivity.loginNickname) // ----------------- 유저삭제 저장해야함, tcp 메시지 보내야함
                         getInOutRoom (RoomDetail.roomNo2, MainActivity.loginId, "exitRoom/${MainActivity.loginNickname} 님이 참가를 취소 하였습니다./${currentTime}/${MainActivity.loginNickname}") // HashMap 안에 socket 정보 지워줌
 
-//                        removeUserprofile() // 참가중인 userlist 에서 유저 삭제
-//                        RoomDetail.intoUser = false
+                        // 룸 시작 시간 알람매니저 취소
+                        cancelAlarmManager ()
+                        cancelAlarmManagerStartRun()
 
-                        val intent = Intent (getActivity(), Home::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        getActivity()?.startActivity(intent)
-                        getActivity()?.finish()
+                        goHome ()
 
                     })
                     dlg.setNegativeButton("취소", null)
@@ -193,7 +183,7 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
                 coroutineRoomIntoOut ("joinRoom", MainActivity.loginId, RoomDetail.roomNo2, MainActivity.loginNickname)
 
                 connectSocket () // 소켓연결 + 참가신청 메시지 socket 발송 (getInOutRoom 메서드)
-                addMessage ("joinRoom", currentTime, MainActivity.loginNickname + " 님이 참가신청 하셨습니다.", MainActivity.loginNickname) // addMessageObject
+//                addMessage ("joinRoom", currentTime, MainActivity.loginNickname + " 님이 참가신청 하셨습니다.", MainActivity.loginNickname) // addMessageObject
 
                 addUserprofile() // 참가중인 userlist 에 프로필 추가
                 RoomDetail.intoUser = true
@@ -203,36 +193,30 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
                 startAlarmManagerStartRun () // alarmManager 러닝 시작 notification
 
                 // 참가신청 클릭 시간이 러닝 시작 10분전 보다 이전이면 러닝시작 10분전을 알려주는 alarmManager 작동
-                if ( longStartTimeAlarm!! < System.currentTimeMillis()) {
-
-
-                } else {
-                    startAlarmManager() // alarmManager 러닝 10분전 notification
+                if ( longStartTimeAlarm!! > System.currentTimeMillis()) {
+                    startAlarmManager() // alarmManager 러닝 10분전 notification 등록
                 }
             }
         }
     }
 
+
     // 현재시간과
     fun runStartTimer() {
 
-        timertitle.visibility = View.VISIBLE // "경기 시작까지 남은 시간" 문구 textView
-        var mNow = System.currentTimeMillis() // 현재시간 countDown thread 를 진행하기 위한
-
         val longStartTime2 = mFormat.parse(RoomDetail.longStartTime).time
         val diffTime = longStartTime2 - RoomDetail.currentServerTime
-
-        Log.d(TAG, "서버시간  (msec) : ${RoomDetail.currentServerTime}")
-        Log.d(TAG, "방에서 설정한 시간  (msec) : $longStartTime2")
-        Log.d(TAG, "시간 차이  (msec) : $diffTime")
+        Log.d(TAG, "runStartTimer() 타이머 시작 서버시간 "+RoomDetail.currentServerTime+" 룸시간"+longStartTime2+" 두 시간간의 차이"+diffTime)
 
         startGametimer = object : CountDownTimer(diffTime, 1000) {
             @SuppressLint("ResourceAsColor")
             override fun onTick(millisUntilFinished: Long) {
                 isRunningStartGametimer = true
 
-//                var mNow1 = System.currentTimeMillis()
-//                var diffTime1 = longStartTime2 - mNow1
+                if ( longStartTimeAlarm!! < System.currentTimeMillis()) {
+                    timertitle.visibility = View.VISIBLE // "경기 시작까지 남은 시간" 문구 textView
+                    timer.visibility = View.VISIBLE
+                }
 
                 if (timer != null) {
 
@@ -250,6 +234,8 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
                         updateActiveRunState = true
 
                         coroutineActiveRunState(RoomDetail.roomNo2)
+                        cancelAlarmManagerStartRun ()
+
                     }
 
                         participate.visibility = View.GONE // 참가신청 & 참가취소 버튼
@@ -316,9 +302,24 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
 
         var intent = Intent(this.context, AlarmReceiver::class.java)  // 1 여기서 object 를 set 하면 됨
         intent.putExtra("roomNo", RoomDetail.roomNo2)
+        intent.putExtra("longStartTime", RoomDetail.longStartTime)
 
         pendingIntent = PendingIntent.getBroadcast( this.context, AlarmReceiver.NOTIFICATION_ID, intent, PendingIntent.FLAG_ONE_SHOT)
         alarmManager!!.setExactAndAllowWhileIdle( AlarmManager.RTC_WAKEUP, longStartTimeAlarm!!, pendingIntent )
+
+    }
+
+    fun cancelAlarmManager () {
+        Log.d(TAG, "cancelAlarmManager () ")
+
+        alarmManager = activity!!.getSystemService(ALARM_SERVICE) as AlarmManager
+
+        var intent = Intent(this.context, AlarmReceiver::class.java)  // 1 여기서 object 를 set 하면 됨
+        intent.putExtra("roomNo", RoomDetail.roomNo2)
+        intent.putExtra("longStartTime", RoomDetail.longStartTime)
+
+        pendingIntent = PendingIntent.getBroadcast( this.context, AlarmReceiver.NOTIFICATION_ID, intent, PendingIntent.FLAG_ONE_SHOT)
+        alarmManager!!.cancel( pendingIntent )
 
     }
 
@@ -329,15 +330,30 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
 
         var intent = Intent(this.context, AlarmReceiverStartRun::class.java)  // 1 여기서 object 를 set 하면 됨
         intent.putExtra("roomNo", RoomDetail.roomNo2)
+        intent.putExtra("longStartTime", RoomDetail.longStartTime)
 
         pendingIntent = PendingIntent.getBroadcast( this.context, AlarmReceiverStartRun.NOTIFICATION_ID, intent, PendingIntent.FLAG_ONE_SHOT)
         alarmManager!!.setExactAndAllowWhileIdle( AlarmManager.RTC_WAKEUP, mFormat.parse(RoomDetail.longStartTime).time, pendingIntent )
 
     }
 
+    fun cancelAlarmManagerStartRun () {
+        Log.d(TAG, "cancelAlarmManagerStartRun () ")
+
+        alarmManager = activity!!.getSystemService(ALARM_SERVICE) as AlarmManager
+
+        var intent = Intent(this.context, AlarmReceiverStartRun::class.java)  // 1 여기서 object 를 set 하면 됨
+        intent.putExtra("roomNo", RoomDetail.roomNo2)
+        intent.putExtra("longStartTime", RoomDetail.longStartTime)
+
+        pendingIntent = PendingIntent.getBroadcast( this.context, AlarmReceiverStartRun.NOTIFICATION_ID, intent, PendingIntent.FLAG_ONE_SHOT)
+        alarmManager!!.cancel( pendingIntent )
+
+    }
+
     fun convertLongToTime(time: Long): String {
         val date = Date(time)
-        val format = SimpleDateFormat("yyyy.MM.dd HH:mm")
+        val format = SimpleDateFormat("yyyy.MM.dd kk:mm:ss")
         return format.format(date)
     }
 
@@ -405,8 +421,13 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
 
             getInOutRoom(RoomDetail.roomNo2, MainActivity.loginId, "joinRoom/${MainActivity.loginNickname} 님이 참가하였습니다./${System.currentTimeMillis()}/${MainActivity.loginId}") // 소켓 메시지 전송
 
-            Thread.sleep(400)
-            getInOutRoom(RoomDetail.roomNo2, MainActivity.loginId, "joinRoom/${MainActivity.loginNickname} 님이 참가하였습니다./${System.currentTimeMillis()}/${MainActivity.loginId}") // 소켓 메시지 전송
+            thread(start = true) {
+
+                Thread.sleep(200)
+                getInOutRoom(RoomDetail.roomNo2, MainActivity.loginId, "joinRoom/${MainActivity.loginNickname} 님이 참가하였습니다./${System.currentTimeMillis()}/${MainActivity.loginId}") // 소켓 메시지 전송
+
+            }
+
         }
     }
 
@@ -490,11 +511,17 @@ class RoomInformationFragment : Fragment(), View.OnClickListener {
                 )
             }
 
-            removeUserprofile(positionTransfer!!) // 방장 넘겨준 후 참가중인 유저리스트에서 유저프로필 삭제
+//            removeUserprofile(positionTransfer!!) // 방장 넘겨준 후 참가중인 유저리스트에서 유저프로필 삭제
 
-            RoomDetail.intoUser = false
-            participateBackground() // ui 변경되는 부분 참가신청 or 참가취소로 변경
+            // 룸 참가 취소 인원 DB 테이블에 유저 저장 후 message 테이블에도 참가취소 내역 저장 -----------------------------------------------------------------------------------------------------------    유저 삭제 통신 코드 테스트해야함
+            coroutineRoomIntoOut ("leaveRoom", MainActivity.loginId, RoomDetail.roomNo2, MainActivity.loginNickname) // 해당 테이블에서 유저 삭제
+            getInOutRoom (RoomDetail.roomNo2, MainActivity.loginId, "exitRoom/${MainActivity.loginNickname} 님이 참가를 취소 하였습니다./${System.currentTimeMillis()}/${MainActivity.loginNickname}") // HashMap 안에 socket 정보 지워줌
 
+            // 룸 시작 시간 알람매니저 취소
+            cancelAlarmManager ()
+            cancelAlarmManagerStartRun()
+
+            goHome ()
 
             dialog.dismiss()
             dialog.cancel()

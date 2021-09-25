@@ -55,8 +55,6 @@ class RunningActive : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private val REQUEST_ACCESS_FINE_LOCATION = 1000
-
     lateinit var mMap: GoogleMap
 
     var roomNo = 0
@@ -650,75 +648,6 @@ class RunningActive : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
-
-    private fun permissionCheck(cancel: () -> Unit, ok: () -> Unit) {   // 전달인자도, 리턴값도 없는
-        // 두 개의 함수를 받음
-
-        if (ContextCompat.checkSelfPermission(this,                  // 권한이 없는 경우
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {       // 권한 거부 이력이 있는 경우
-
-                cancel()
-
-            } else {
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_ACCESS_FINE_LOCATION)
-            }
-        } else {                                                    // 권한이 있는 경우
-            ok()
-        }
-    }
-
-//    private  fun showPermissionInfoDialog() {
-//
-//        val builder: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
-//        builder.setTitle("위치 서비스 비활성화")
-//        builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n 위치 설정을 수정하실래요?".trimIndent())
-//        builder.setCancelable(true)
-//
-//        builder.setPositiveButton("설정", DialogInterface.OnClickListener { dialog, id ->
-//            val callGPSSettingIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-//            ActivityCompat.requestPermissions(this,  // 첫 전달인자: Context 또는 Activity
-//                // this: DialogInterface 객체
-//                // this@MapsActivity는 액티비티를 명시적으로 가리킨 것임
-//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                REQUEST_ACCESS_FINE_LOCATION)
-//        })
-//    }
-
-//    // 권한 요청 결과 처리
-//    override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<String>,  grantResults: IntArray ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//
-//        when (requestCode) {
-//            REQUEST_ACCESS_FINE_LOCATION -> {
-//                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-//                    addLocationListener()
-//                } else {
-//                    Toast.makeText(this,"권한이 거부 됨", Toast.LENGTH_SHORT).show()
-//                }
-//                return
-//            }
-//        }
-//    }
-//
-//    private fun addLocationListener() {
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_COARSE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            return
-//        }
-//        MyService.fusedLocationProviderClient.requestLocationUpdates(MyService.locationRequest, MyService.locationCallback, null)  // 혹시 안드로이드 스튜디오에서 비정상적으로 권한 요청 오류를 표시할 경우, 'Alt+Enter'로
-//
-//    }
-
-
     // 뒤로가기 버튼 막음
     override fun onBackPressed() {
     }
@@ -759,11 +688,7 @@ class RunningActive : AppCompatActivity(), OnMapReadyCallback {
     override fun onRestart() {
         super.onRestart()
 
-        // 권한 요청
-//        permissionCheck(
-//            cancel = { showPermissionInfoDialog() },   // 권한 필요 안내창
-//            ok = { addLocationListener()}      // ③   주기적으로 현재 위치를 요청
-//        )
+
     }
 
     override fun onStop() {
@@ -773,24 +698,4 @@ class RunningActive : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//
-//        if (mBound) {
-//            unbindService(mConnection)
-//            mBound = false
-//        }
-//
-//        networkWriter?.close()
-//        socket?.close()
-//
-//        checkUpdate1.interrupt()
-//
-//        if (tts != null) {
-//            tts!!.stop()
-//            tts!!.shutdown()
-//        }
-//    }
 }

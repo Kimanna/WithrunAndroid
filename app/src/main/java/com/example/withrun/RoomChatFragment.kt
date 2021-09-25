@@ -32,11 +32,16 @@ class RoomChatFragment : Fragment() {
         return frag
     }
 
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
-        val view = inflater.inflate(R.layout.fragment_room_chat, container,false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_room_chat, container, false)
         Log.d(TAG, "onCreateView RoomChatFragment 지난후 " + RoomDetail.intoUser)
 
         mHandler = Handler()
+
 
         return view
     }
@@ -46,6 +51,7 @@ class RoomChatFragment : Fragment() {
 
         RoomDetail.adapterChat = ChatMessageAdapter(this.context!!, RoomDetail.listChat)
         recyclerviewMessage()
+
     }
 
     fun addMessage(type: String, sendTime: Long, sendMessage: String, sendUserNickname: String) {
@@ -91,14 +97,16 @@ class RoomChatFragment : Fragment() {
 
         if (RoomDetail.listChat.size > 0) {
             RoomDetail.adapterChat?.notifyDataSetChanged()
-            chatRecyclerview.scrollToPosition(RoomDetail.listChat.size-1);
+            chatRecyclerview.scrollToPosition(RoomDetail.listChat.size - 1);
         }
     }
 
     fun getInOutRoom(roomNo: Int, intoUserId: Int, action: String) {
 
-        CoroutineScope(Dispatchers.Main).launch {  this
-            val html = CoroutineScope(Dispatchers.Default).async { this
+        CoroutineScope(Dispatchers.Main).launch {
+            this
+            val html = CoroutineScope(Dispatchers.Default).async {
+                this
 
                 RoomDetail.out = PrintWriter(RoomDetail.networkWriter!!, true)
                 RoomDetail.out!!.println("$roomNo/$intoUserId/$action")
@@ -128,7 +136,7 @@ class RoomChatFragment : Fragment() {
                     sleep(1500) // nerworkReader 가 연결되기 위한 시간을 벌기 위해
 
                     line = RoomDetail.networkReader!!.readLine()
-                    Log.d(TAG, "141 readLine() "  )
+                    Log.d(TAG, "141 readLine() ")
 
                     html = line
                     Log.d(TAG, "html 출력 $html")
@@ -136,8 +144,16 @@ class RoomChatFragment : Fragment() {
                     // roomNo/userId/intoRoom or exitRoom/nickname/images/running1.jpeg
                     val strs = html.split("/").toTypedArray()
 
-                    if (strs[2] == "intoRoom") { // chat 메시지 저장해야함
-                        Log.d(TAG, "intoRoom 지나감")
+                    if (strs[2] == "joinRoom") { // chat 메시지 저장해야함
+                        Log.d(TAG, "joinRoom 지나감")
+
+                        var messageObj = Message()
+                        messageObj.setMessagetype(2)
+                        messageObj.setMessageText(strs[3])
+                        messageObj.setNickname(strs[3])
+                        RoomDetail.listChat.add(messageObj)
+
+                        mHandler!!.post(updateMessage)
 
 //                        var user = RoomIntoUser()
 //                        user.setNickname(strs[3])
@@ -145,7 +161,7 @@ class RoomChatFragment : Fragment() {
 //                        user.setId(strs[1].toInt())
 //                        user.setDistanceGap(distance.toInt()*100)
 //                        list.add(user)
-                        mHandler!!.post(updateMessage)
+//                        mHandler!!.post(updateMessage)
                     }
 
                     // 75/4/runIntoRoom/노바/images/running1.jpeg
@@ -212,20 +228,20 @@ class RoomChatFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart RoomChatFragment 지난후 "+ RoomDetail.intoUser)
+        Log.d(TAG, "onStart RoomChatFragment 지난후 " + RoomDetail.intoUser)
 
-        changeCover ()
+        changeCover()
 
     }
 
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume RoomChatFragment 지난후 "+ RoomDetail.intoUser)
+        Log.d(TAG, "onResume RoomChatFragment 지난후 " + RoomDetail.intoUser)
 
 //        (activity as RoomDetail).connectFragment()
 
-        changeCover () // 유저 참가여부에 따라 chat cover 변경해줌
+        changeCover() // 유저 참가여부에 따라 chat cover 변경해줌
 
         // chatFragment 메시지 발송버튼
         sendMessage.setOnClickListener {
@@ -235,19 +251,29 @@ class RoomChatFragment : Fragment() {
             // joinRoom / exitRoom / message
             addMessage("message", System.currentTimeMillis(), message, MainActivity.loginNickname)
             recyclerviewMessage()
-            getInOutRoom( RoomDetail.roomNo2, MainActivity.loginId, "message/$message/${System.currentTimeMillis()}/${MainActivity.loginNickname}${MainActivity.loginProfileImgPath}")
-            coroutinMessage( RoomDetail.roomNo2, MainActivity.loginId, Date(System.currentTimeMillis()).toString(), message ) // 메시지 저장
+            getInOutRoom(
+                RoomDetail.roomNo2,
+                MainActivity.loginId,
+                "message/$message/${System.currentTimeMillis()}/${MainActivity.loginNickname}${MainActivity.loginProfileImgPath}"
+            )
+            coroutinMessage(
+                RoomDetail.roomNo2,
+                MainActivity.loginId,
+                Date(System.currentTimeMillis()).toString(),
+                message
+            ) // 메시지 저장
 
             inputMessage.text = null
         }
 
     }
 
-    fun changeCover () {
+
+    fun changeCover() {
         Log.d(TAG, "changeCover 지나감")
 
 
-        if ( RoomDetail.intoUser ) { // 해당 room 에 참가신청한 상태 --------------------------------- chat 데이터 가져와야함, TCP 연결해야함
+        if (RoomDetail.intoUser) { // 해당 room 에 참가신청한 상태 --------------------------------- chat 데이터 가져와야함, TCP 연결해야함
             chatAreaView.visibility = View.VISIBLE
             chatAreaHide.visibility = View.GONE
 
@@ -261,8 +287,10 @@ class RoomChatFragment : Fragment() {
     // chatmessage 저장
     fun coroutinMessage(roomNo: Int, userId: Int, sendAt: String, message: String) {
 
-        CoroutineScope(Dispatchers.Main).launch { this
-            val message = CoroutineScope(Dispatchers.Default).async {  this
+        CoroutineScope(Dispatchers.Main).launch {
+            this
+            val message = CoroutineScope(Dispatchers.Default).async {
+                this
                 message(roomNo, userId, sendAt, message)
             }
             Log.d(TAG, "pass this line 600")
@@ -278,7 +306,6 @@ class RoomChatFragment : Fragment() {
             .build()
         client.newCall(req).execute()
     }
-
 
 
 }

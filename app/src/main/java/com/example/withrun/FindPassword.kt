@@ -13,22 +13,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import java.security.DigestException
+import java.security.MessageDigest
 
 class FindPassword : AppCompatActivity() {
 
     val TAG : String = "FindPassword"
+    var email : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_password)
 
-        var email : String = ""
 
         // 뒤로가기 버튼 클릭시 login 화면으로 돌아감
         back_Main.setOnClickListener(View.OnClickListener { view ->
-            val intent1 = Intent(this, MainActivity::class.java)
-            startActivity(intent1)
-            finish()
+            goMainActivity ()
+
         })
 
         sendTempPw.setOnClickListener(View.OnClickListener { view ->
@@ -47,21 +48,43 @@ class FindPassword : AppCompatActivity() {
                 })
                 dlg.show()
             }
-
         })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        goMainActivity ()
+    }
+
+    fun goMainActivity () {
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        startActivity(intent)
+        finish()
     }
 
     fun coroutine (email:String) {
         CoroutineScope(Dispatchers.Main).launch { this
             val html = CoroutineScope(Dispatchers.Default).async { this
-                // network
-                getHtml(email, randomPw())
+                getHtml(email,randomPw())
             }.await()
 
             Log.d(TAG,html)
+
+            /*
+             if 등록된 이메일이 있는경우 email로 임시 비밀번호를 방송한 후 서버로부터 "ok" 를 return받음
+             else 등록된 이메일이 없는경우 서버로부터 "notok" 를 return받은 후 이메일을 찾을 수 없다는 안내문구 띄워줌
+             */
+
             if (html == "ok") {
 
                 goMain ()
+
+            } else {
+
+                notFoundEmailNoti.visibility = View.VISIBLE
+
             }
 
         }
@@ -70,13 +93,14 @@ class FindPassword : AppCompatActivity() {
     fun goMain () {
 
         val dlg: AlertDialog.Builder = AlertDialog.Builder(this,  android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth)
-        dlg.setMessage("입력하신 email 로 임시 비밀번호 발송 드렸습니다. \n 임시 비밀번호로 로그인 해주시기 바랍니다.") // 메시지
+        dlg.setMessage("입력하신 email 로 임시 비밀번호를 발송 드렸습니다. \n 임시 비밀번호로 로그인 해주시기 바랍니다.") // 메시지
         dlg.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
 
             val intent1 = Intent(this, MainActivity::class.java)
-            intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             startActivity(intent1)
             finish()
+
         })
         dlg.show()
 
@@ -97,6 +121,8 @@ class FindPassword : AppCompatActivity() {
     }
 
     fun randomPw(): String {
+
+        var randomPwString = ""
         val pwCollectionSpCha =
             charArrayOf('!', '@', '#', '$', '%', '^', '&', '*', '(', ')')
         val pwCollectionNum =
@@ -107,8 +133,14 @@ class FindPassword : AppCompatActivity() {
             'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
             '!','@','#','$','%','^','&','*','(',')'
         )
-        return getRandPw(1, pwCollectionSpCha) + getRandPw(8, pwCollectionAll) + getRandPw(1, pwCollectionNum)
+
+        randomPwString = getRandPw(1, pwCollectionSpCha) + getRandPw(8, pwCollectionAll) + getRandPw(1, pwCollectionNum)
+
+        Log.d(TAG, "발송된 임시 비밀번호 출력 " + randomPwString)
+
+        return randomPwString
     }
+
 
     fun getRandPw(size: Int, pwCollection: CharArray): String {
         var ranPw = ""

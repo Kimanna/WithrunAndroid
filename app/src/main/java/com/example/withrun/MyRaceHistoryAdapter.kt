@@ -53,7 +53,10 @@ class MyRaceHistoryAdapter(var context: Context, val RaceRecord: ArrayList<class
         fun onBind (record: class_RaceRecord, context: Context) {
             itemView.setOnClickListener{ itemClick(record) }
 
-            if ( record.getMyRanking() == 1 ) { // 금메달
+            if ( record.getMyRanking() == 0 ) { // 경기를 포기한경우
+                medalImage?.setImageResource(R.drawable.medal_badge)
+                medalText?.text = "순위없음"
+            } else if ( record.getMyRanking() == 1 ) { // 금메달
                 medalImage?.setImageResource(R.drawable.medal_gold)
                 medalText?.text = "금메달"
             } else if ( record.getMyRanking() == 2 ) { // 은메달
@@ -64,7 +67,7 @@ class MyRaceHistoryAdapter(var context: Context, val RaceRecord: ArrayList<class
                 medalText?.text = "동메달"
             } else { // 순위권 밖
                 medalImage?.setImageResource(R.drawable.medal_badge)
-                medalText?.text = "순위 없음"
+                medalText?.text = record.getMyRanking().toString() + " 위"
             }
 
             var startDate = record.getGameFinishTime()!!

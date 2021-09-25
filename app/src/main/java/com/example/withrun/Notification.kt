@@ -27,7 +27,7 @@ class Notification : AppCompatActivity() {
 
         back_Home.setOnClickListener {
             val intent = Intent(this, Home::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
 
@@ -40,7 +40,7 @@ class Notification : AppCompatActivity() {
         super.onBackPressed()
 
         val intent = Intent(this, Home::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
 
@@ -158,13 +158,11 @@ class Notification : AppCompatActivity() {
             when (action) {
                 "invitation" -> {
 
-                    val roomNo = jsonObject.getJSONArray("result").getJSONObject(0).getInt("roomNo")
+                    var jsonObjectRoom = jsonObject.getJSONArray("result").getJSONObject(0)
+                    val gameStartTime = jsonObjectRoom.getInt("gameStartTime")
 
-                    val intent = Intent(baseContext, RoomDetail::class.java)
-                    intent.putExtra("location", "Notification")
-                    intent.putExtra("roomNo", roomNo)
-                    startActivity(intent)
-                    finish()
+                    goActivity(jsonObjectRoom, gameStartTime)
+
 
                 }
                 "follow" -> {
@@ -195,6 +193,32 @@ class Notification : AppCompatActivity() {
                 "body null"
             }
         }
+    }
+
+    fun goActivity (jsonObjectRoom: JSONObject, gameStartTime: Int) {
+
+        val currentTime = System.currentTimeMillis() - 10000
+
+        if (gameStartTime == 0) {
+
+            oftenUseMethod.dialogConfirmShow ("해당 룸이 삭제되었습니다.", this)
+
+
+        } else if (gameStartTime > currentTime) {
+
+            oftenUseMethod.dialogConfirmShow ("이미 시작 시간이 지나 입장이 불가합니다.", this)
+
+        } else {
+
+            val roomNo = jsonObjectRoom.getInt("roomNo")
+
+            val intent = Intent(baseContext, RoomDetail::class.java)
+            intent.putExtra("location", "Notification")
+            intent.putExtra("roomNo", roomNo)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
 }

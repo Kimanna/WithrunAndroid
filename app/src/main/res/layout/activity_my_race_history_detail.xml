@@ -33,6 +33,16 @@
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     <ImageView
+        android:id="@+id/deleteRecordBT"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:srcCompat="@drawable/more" />
+
+    <ImageView
         android:id="@+id/backBT"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -186,14 +196,14 @@
 
         <TextView
             android:id="@+id/textView71"
-            android:layout_width="160dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="기록" />
 
         <TextView
             android:id="@+id/textView72"
-            android:layout_width="70dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="페이스" />

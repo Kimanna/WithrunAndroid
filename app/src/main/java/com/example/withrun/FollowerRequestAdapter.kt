@@ -2,8 +2,6 @@
 package com.example.withrun
 
 import android.content.Context
-import android.content.DialogInterface
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +11,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.example.withrun.oftenUseMethod.distanceDigitString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -78,13 +75,9 @@ class FollowerRequestAdapter(val context: Context, val followList: ArrayList<Fol
                 coroutineAcceptFollower(user.getYouId()!!,"acceptFollower")
 
                 // 현재 youId 유저를 팔로잉하고있는 상태인지 확인
-               coroutineFindFollowState(user.getYouId()!!,"findMyFollow")
+               coroutineFindFollowState(user.getYouId()!!,"findMyFollow", requestFollowing, followingState)
 
-                if ( isFollowing == 0 ) {
-                    requestFollowing!!.visibility = View.VISIBLE
-                } else {
-                    followingState!!.visibility = View.VISIBLE
-                }
+
             }
 
             // 팔로우 요청 거절버튼
@@ -108,6 +101,8 @@ class FollowerRequestAdapter(val context: Context, val followList: ArrayList<Fol
             }
         }
     }
+
+
 
     fun coroutineAcceptFollower(youId: Int, action: String) {
         Log.d(TAG, "coroutineAcceptFollower ()")
@@ -139,7 +134,7 @@ class FollowerRequestAdapter(val context: Context, val followList: ArrayList<Fol
         }
     }
 
-    fun coroutineFindFollowState(youId: Int, action: String) {
+    fun coroutineFindFollowState( youId: Int, action: String, requestFollowing: Button?, followingState: Button?) {
         Log.d(TAG, "coroutineAcceptFollower ()")
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -153,7 +148,17 @@ class FollowerRequestAdapter(val context: Context, val followList: ArrayList<Fol
             val jsonObject = JSONObject(follows)
             isFollowing = jsonObject.getJSONArray("result").getJSONObject(0).getInt("isFollowing")
 
-            Log.d(TAG, "isFollowing  " + isFollowing)
+
+            // following 상태이면
+            if ( jsonObject.getJSONArray("result").getJSONObject(0).getInt("isFollowing") == 1 ) {
+
+                followingState!!.visibility = View.VISIBLE
+
+            } else {
+
+                requestFollowing!!.visibility = View.VISIBLE
+
+            }
 
         }
     }
